@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.jimureport:spring-boot-starter-jimureport:1.1.09-beta">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/jimureport/spring-boot-starter-jimureport/1.1.09-beta/spring-boot-starter-jimureport-1.1.09-beta.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/jimureport/spring-boot-starter-jimureport/1.1.09-beta/spring-boot-starter-jimureport-1.1.09-beta-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/jimureport/spring-boot-starter-jimureport/1.1.09-beta/spring-boot-starter-jimureport-1.1.09-beta-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
