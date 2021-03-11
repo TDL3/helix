@@ -46,19 +46,9 @@ import echarts from 'echarts'
 Vue.prototype.$echarts = echarts;
 
 
-// import moment from 'moment';
-// Vue.filter('formatDate', function(value) {
-//     if (value) {
-//         return moment(String(value)).format('MM/DD/YYYY hh:mm')
-//     }
-// });
-
-
 console.log(`
-       欢迎使用 Gin-Vue-Admin
+       欢迎使用 Helix
        当前版本:V2.4.0
-       加群方式:微信：shouzi_1994 QQ群：622360840
        默认自动化文档地址:http://127.0.0.1%s/swagger/index.html
        默认前端文件运行地址:http://127.0.0.1:8080
-       如果项目让您获得了收益，希望您能请团队喝杯可乐:https://www.gin-vue-admin.com/docs/coffee
 `)
