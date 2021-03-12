@@ -9,6 +9,3 @@ This is my final year project.
 [Vue.js](https://github.com/vuejs/vue)
 [gin-vue-admin](https://github.com/flipped-aurora/gin-vue-admin)
 
-
-## Note
-Apply for Changzhi University is THE WORST decision I ever made, do not make the same mistake I did, do not trust what you read online, that is, if you can read this.
