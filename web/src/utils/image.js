@@ -10,6 +10,7 @@ export default class ImageCompress {
         const fileType = this.file.type
         const fileSize = this.file.size / 1024
         return new Promise(resolve => {
+            console.log(this.file);
             const reader = new FileReader();
             reader.readAsDataURL(this.file);
             reader.onload = () => {

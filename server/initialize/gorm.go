@@ -55,7 +55,6 @@ func MysqlTables(db *gorm.DB) {
 		model.WorkflowEndPoint{},
 		model.WorkflowMove{},
 		model.ExaWfLeave{},
-		model.LostItems{},
 		model.Items{},
 	)
 	if err != nil {

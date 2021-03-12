@@ -40,7 +40,7 @@
         tooltip-effect="dark"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="日期" width="180">
+      <el-table-column label="创建日期" width="180">
         <template slot-scope="scope">{{ scope.row.CreatedAt|formatDate }}</template>
       </el-table-column>
 
@@ -54,7 +54,11 @@
         <template slot-scope="scope">{{ scope.row.isFond|formatBoolean }}</template>
       </el-table-column>
 
-      <el-table-column label="失物图片" prop="picture" width="120"></el-table-column>
+      <el-table-column label="失物图片" prop="picture" width="240" >
+        <template slot-scope="scope">
+          <img class="image" @click="openImgInNewTab(path + scope.row.picture)" :src="path + scope.row.picture" alt="失物图片">
+        </template>
+      </el-table-column>
 
       <el-table-column label="QQ" prop="QQ" width="120"></el-table-column>
 
@@ -62,13 +66,13 @@
 
       <el-table-column label="手机" prop="phone" width="120"></el-table-column>
 
-      <el-table-column label="详细描述" prop="description" width="120"></el-table-column>
+      <el-table-column label="详细描述" prop="description" width="200"></el-table-column>
 
       <el-table-column label="创建者" prop="createdBy" width="120"></el-table-column>
 
-<!--      <el-table-column label="uuid" prop="uuid" width="120"></el-table-column>-->
-`
-      <el-table-column label="按钮组">
+      <el-table-column label="uuid" prop="uuid" width="120"></el-table-column>
+
+      <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button class="table-button" @click="updateItems(scope.row)" size="small" type="primary"
                      icon="el-icon-edit">变更
@@ -89,7 +93,7 @@
         layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
 
-    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
+    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="物品信息">
       <el-form :model="formData" label-position="right" label-width="80px">
         <el-form-item label="标题:">
           <el-input v-model="formData.title" clearable placeholder="请输入"></el-input>
@@ -108,8 +112,8 @@
                      v-model="formData.isFond" clearable></el-switch>
         </el-form-item>
 
-        <el-form-item label="失物图片:">
-          <el-input v-model="formData.picture" clearable placeholder="请输入"></el-input>
+        <el-form-item label="失物图片" prop="picture">
+          <upload-image v-model="formData.picture" :fileSize="512" :maxWH="1080" />
         </el-form-item>
 
         <el-form-item label="QQ:">
@@ -125,16 +129,18 @@
         </el-form-item>
 
         <el-form-item label="详细描述:">
-          <el-input v-model="formData.description" clearable placeholder="请输入"></el-input>
+          <!--          <el-input v-model="formData.description" clearable placeholder="请输入"></el-input>-->
+          <el-input v-model="formData.description" type="textarea" placeholder="请输入详细描述"
+                    :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
         </el-form-item>
 
         <el-form-item label="创建者:">
           <el-input v-model="formData.createdBy" clearable placeholder="请输入"></el-input>
         </el-form-item>
 
-        <!--        <el-form-item label="uuid:">-->
-        <!--          <el-input v-model="formData.uuid" clearable placeholder="请输入"></el-input>-->
-        <!--        </el-form-item>-->
+<!--        <el-form-item label="uuid:">-->
+<!--          <el-input v-model="formData.uuid" clearable placeholder="请输入"></el-input>-->
+<!--        </el-form-item>-->
       </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -145,6 +151,8 @@
 </template>
 
 <script>
+const path = process.env.VUE_APP_BASE_API;
+// console.log(path)
 import {
   createItems,
   deleteItems,
@@ -156,17 +164,21 @@ import {
 } from "@/api/items";  //  此处请自行替换地址
 import {formatTimeToStr} from "@/utils/date";
 import infoList from "@/mixins/infoList";
+import UploadImage from "@/components/upload/image";
 
 export default {
+
   name: "Items",
   mixins: [infoList],
   data() {
     return {
+      path: path,
       listApi: getCurrentUserItemsList,
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
       user_uuid: "",
+      user_nick_name: "",
       multipleSelection: [], formData: {
         title: "",
         location: "",
@@ -200,7 +212,17 @@ export default {
       }
     }
   },
+  components: {
+    UploadImage
+  },
   methods: {
+    openImgInNewTab(url) {
+      let windowObjectReference = window.open(
+          url,
+          "大图"
+      );
+      windowObjectReference.focus();
+    },
     //条件搜索前端看此方法
     onSubmit() {
       this.page = 1
@@ -268,7 +290,7 @@ export default {
         wechat: "",
         phone: "",
         description: "",
-        createdBy: "",
+        createdBy: this.user_nick_name,
         uuid: this.user_uuid,
 
       };
@@ -310,19 +332,33 @@ export default {
     },
     openDialog() {
       this.type = "create";
-      this.dialogFormVisible = true;
+      this.$router.push({name: "NewItemForm"});
+      // this.dialogFormVisible = false;
     }
   },
   async created() {
     await this.getTableData();
-    const userUUID = await getUserInfo();
-    // console.log(userUUID)
-    this.formData.uuid = userUUID.msg;
-    this.user_uuid = userUUID.msg;
+    const userInfo = await getUserInfo();
+    const userUUID = userInfo.data[0].uuid;
+    const userNickName = userInfo.data[0].nick_name;
+    // console.log("UserUUID: " + userUUID);
+    // console.log("UserUUIDNickName: " + userNickName);
+    this.formData.uuid = userUUID;
+    this.user_uuid = userUUID;
+    this.formData.createdBy = userNickName;
+    this.user_nick_name = userNickName
 
   }
 };
 </script>
 
-<style>
+<style scoped>
+.image {
+  /*width: 158px;*/
+  height: 118px;
+  /*display: block;*/
+}
+.image:hover {
+  cursor: pointer;
+}
 </style>

@@ -7,14 +7,16 @@ import (
 )
 
 
-func FilterItemsInfoListByUUID(info request.LostItemsSearch, uuid string) (err error, list interface{}, total int64) {
+func FilterItemsInfoListByUUID(info request.ItemsSearch, uuid string) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
 	db := global.GVA_DB.Model(&model.Items{})
 	var Items []model.Items
 	// 如果有条件搜索 下方会自动创建搜索语句
+
 	err = db.Where("uuid = ?", uuid).Error
+	err = db.Where("is_fond = 0").Error
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&Items).Error
 	return err, Items, total
@@ -99,6 +101,28 @@ func GetItemsInfoList(info request.ItemsSearch) (err error, list interface{}, to
     if info.Time != "" {
          db = db.Where("`time` = ?",info.Time)
     }
+	err = db.Count(&total).Error
+	err = db.Limit(limit).Offset(offset).Find(&itms).Error
+	return err, itms, total
+}
+
+func GetItemsInfoListUser(info request.ItemsSearch) (err error, list interface{}, total int64) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	// 创建db
+	db := global.GVA_DB.Model(&model.Items{})
+	err = db.Where("is_fond = 0").Error
+	var itms []model.Items
+	// 如果有条件搜索 下方会自动创建搜索语句
+	if info.Title != "" {
+		db = db.Where("`title` LIKE ?","%"+ info.Title+"%")
+	}
+	if info.Location != "" {
+		db = db.Where("`location` LIKE ?","%"+ info.Location+"%")
+	}
+	if info.Time != "" {
+		db = db.Where("`time` = ?",info.Time)
+	}
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&itms).Error
 	return err, itms, total

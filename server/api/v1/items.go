@@ -12,7 +12,7 @@ import (
 
 
 func GetCurrentUserItemsList(c *gin.Context) {
-	var pageInfo request.LostItemsSearch
+	var pageInfo request.ItemsSearch
 	_ = c.ShouldBindQuery(&pageInfo)
 	var uuid = getUserUuid(c)
 	//service.FilterLostItemsInfoListByUUID(pageInfo, uuid)
@@ -148,4 +148,20 @@ func GetItemsList(c *gin.Context) {
             PageSize: pageInfo.PageSize,
         }, "获取成功", c)
     }
+}
+
+func GetItemsListUser(c *gin.Context) {
+	var pageInfo request.ItemsSearch
+	_ = c.ShouldBindQuery(&pageInfo)
+	if err, list, total := service.GetItemsInfoListUser(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }

@@ -118,3 +118,11 @@ export const createItems = (data) => {
          params
      })
  }
+
+export const getItemsListUser = (params) => {
+    return service({
+        url: "/itm/getItemsListUser",
+        method: 'get',
+        params
+    })
+}

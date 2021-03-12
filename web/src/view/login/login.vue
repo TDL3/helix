@@ -7,10 +7,12 @@
         </div>
         <div class="header">
           <a href="/">
-            <!-- <img src="~@/assets/logo.png" class="logo" alt="logo" /> -->
-            <span class="title">Helix</span>
+            <span class="title">Helix | 失物招领</span>
+<!--            <div class="">专注失物招领的平台</div>-->
           </a>
+
         </div>
+
       </div>
       <div class="main">
         <el-form

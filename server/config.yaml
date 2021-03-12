@@ -1,4 +1,4 @@
-# Gin-Vue-Admin Global Configuration
+# Helix Global Configuration
 
 # jwt configuration
 jwt:
@@ -10,7 +10,7 @@ jwt:
 zap:
   level: 'info'
   format: 'console'
-  prefix: '[GIN-VUE-ADMIN]'
+  prefix: '[Helix]'
   director: 'log'
   link-name: 'latest_log'
   show-line: true
@@ -48,7 +48,7 @@ system:
 
 # captcha configuration
 captcha:
-  key-long: 6
+  key-long: 1
   img-width: 240
   img-height: 80
 

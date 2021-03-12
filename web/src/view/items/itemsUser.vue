@@ -10,7 +10,7 @@
         </el-form-item>
         <el-form-item label="丢失时间">
           <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="searchInfo.time" clearable></el-date-picker>
-<!--          <el-input placeholder="搜索条件" v-model="searchInfo.time"></el-input>-->
+          <!--          <el-input placeholder="搜索条件" v-model="searchInfo.time"></el-input>-->
         </el-form-item>
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
@@ -25,7 +25,7 @@
               <el-button @click="deleteVisible = false" size="mini" type="text">取消</el-button>
               <el-button @click="onDelete" size="mini" type="primary">确定</el-button>
             </div>
-            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>
+<!--            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>-->
           </el-popover>
         </el-form-item>
       </el-form>
@@ -70,16 +70,16 @@
 
       <el-table-column label="创建者" prop="createdBy" width="120"></el-table-column>
 
-      <el-table-column label="uuid" prop="uuid" width="120"></el-table-column>
+<!--      <el-table-column label="uuid" prop="uuid" width="120"></el-table-column>-->
 
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button class="table-button" @click="updateItems(scope.row)" size="small" type="primary"
-                     icon="el-icon-edit">变更
-          </el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="操作">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button class="table-button" @click="updateItems(scope.row)" size="small" type="primary"-->
+<!--                     icon="el-icon-edit">变更-->
+<!--          </el-button>-->
+<!--          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <el-pagination
@@ -129,9 +129,7 @@
         </el-form-item>
 
         <el-form-item label="详细描述:">
-<!--          <el-input v-model="formData.description" clearable placeholder="请输入"></el-input>-->
-          <el-input v-model="formData.description" type="textarea" placeholder="请输入详细描述"
-                    :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
+          <el-input v-model="formData.description" clearable placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="创建者:">
@@ -217,11 +215,11 @@ export default {
   },
   methods: {
     openImgInNewTab(url) {
-        let windowObjectReference = window.open(
-            url,
-            "大图"
-        );
-        windowObjectReference.focus();
+      let windowObjectReference = window.open(
+          url,
+          "大图"
+      );
+      windowObjectReference.focus();
     },
     //条件搜索前端看此方法
     onSubmit() {
