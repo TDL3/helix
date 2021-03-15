@@ -1,4 +1,4 @@
-# Gin-Vue-Admin Global Configuration
+# Helix Global Configuration
 
 # jwt configuration
 jwt:
@@ -10,7 +10,7 @@ jwt:
 zap:
   level: 'info'
   format: 'console'
-  prefix: '[GIN-VUE-ADMIN]'
+  prefix: '[Helix]'
   director: 'log'
   link-name: 'latest_log'
   show-line: true
@@ -40,7 +40,7 @@ casbin:
 
 # system configuration
 system:
-  env: 'public'  # Change to "develop" to skip authentication for development mode
+  env: 'develop'  # public or Change to "develop" to skip authentication for development mode
   addr: 8888
   db-type: 'mysql'
   oss-type: 'local'    # 控制oss选择走本期还是 七牛等其他仓 自行增加其他oss仓可以在 server/utils/upload/upload.go 中 NewOss函数配置
@@ -48,17 +48,17 @@ system:
 
 # captcha configuration
 captcha:
-  key-long: 6
+  key-long: 1
   img-width: 240
   img-height: 80
 
 # mysql connect configuration
 mysql:
-  path: ''
-  config: ''
-  db-name: ''
-  username: ''
-  password: ''
+  path: '127.0.0.1:3306'
+  config: 'charset=utf8mb4&parseTime=True&loc=Local'
+  db-name: 'helix_alt'
+  username: 'root'
+  password: 'weed'
   max-idle-conns: 10
   max-open-conns: 100
   log-mode: false
