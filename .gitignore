@@ -26,7 +26,5 @@ go.sum
 /server/log/
 /server/gva
 /server/latest_log
-/server/uploads
-/server/finish
 
 *.iml
