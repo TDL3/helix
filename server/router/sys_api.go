@@ -15,5 +15,7 @@ func InitApiRouter(Router *gin.RouterGroup) {
 		ApiRouter.POST("getApiById", v1.GetApiById) // 获取单条Api消息
 		ApiRouter.POST("updateApi", v1.UpdateApi)   // 更新api
 		ApiRouter.POST("getAllApis", v1.GetAllApis) // 获取所有api
+		ApiRouter.POST("getUserInfo", v1.GetUserInfo) // 获取当前登录用户的信息
+
 	}
 }

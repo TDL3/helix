@@ -11,6 +11,26 @@ import (
 	"go.uber.org/zap"
 )
 
+// Get current logged in user's info, uuid and nick_name
+func GetUserInfo(c *gin.Context) {
+	var user model.SysUser
+	_ = c.ShouldBindJSON(&user)
+
+	db := global.GVA_DB.Model(&model.SysUser{})
+	var Info []response.UserInfo
+	uuid := getUserUuid(c)
+	err := db.Where("uuid = ?", uuid).Select("uuid, nick_name").Find(&Info).Error
+
+	if err != nil {
+		global.GVA_LOG.Error("获取用户信息失败", zap.Any("err", err))
+		response.FailWithMessage("获取用户信息失败", c)
+	} else {
+		response.OkWithData(&Info, c)
+	}
+}
+
+
+
 // @Tags SysApi
 // @Summary 创建基础api
 // @Security ApiKeyAuth
