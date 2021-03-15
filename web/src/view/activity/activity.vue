@@ -4,10 +4,10 @@
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
         <el-form-item label="活动名称">
           <el-input placeholder="搜索条件" v-model="searchInfo.name"></el-input>
-        </el-form-item>    
+        </el-form-item>
         <el-form-item label="活动时间">
           <el-input placeholder="搜索条件" v-model="searchInfo.time"></el-input>
-        </el-form-item>                    
+        </el-form-item>
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
@@ -39,31 +39,31 @@
     <el-table-column label="日期" width="180">
          <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
     </el-table-column>
-    
-    <el-table-column label="活动名称" prop="name" width="120"></el-table-column> 
-    
-    <el-table-column label="活动时间" prop="time" width="120"></el-table-column> 
-    
-    <el-table-column label="活动位置" prop="loaction" width="120"></el-table-column> 
-    
-    <el-table-column label="需要人数" prop="neededPersonnel" width="120"></el-table-column> 
-    
-    <el-table-column label="活动经费" prop="budget" width="120"></el-table-column> 
-    
-    <el-table-column label="活动说明" prop="description" width="120"></el-table-column> 
-    
-    <el-table-column label="申请人" prop="createdBy" width="120"></el-table-column> 
-    
+
+    <el-table-column label="活动名称" prop="name" width="120"></el-table-column>
+
+    <el-table-column label="活动时间" prop="time" width="120"></el-table-column>
+
+    <el-table-column label="活动位置" prop="loaction" width="120"></el-table-column>
+
+    <el-table-column label="需要人数" prop="neededPersonnel" width="120"></el-table-column>
+
+    <el-table-column label="活动经费" prop="budget" width="120"></el-table-column>
+
+    <el-table-column label="活动说明" prop="description" width="120"></el-table-column>
+
+    <el-table-column label="申请人" prop="createdBy" width="120"></el-table-column>
+
       <el-table-column label="申请部门" prop="reqUnion" width="120">
         <template slot-scope="scope">
           {{filterDict(scope.row.reqUnion,"union")}}
         </template>
       </el-table-column>
-    
-    <el-table-column label="审核意见" prop="managementAudit" width="120"></el-table-column> 
-    
-    <el-table-column label="申请人ID" prop="createdUserUuid" width="120"></el-table-column> 
-    
+
+    <el-table-column label="审核意见" prop="managementAudit" width="120"></el-table-column>
+
+    <el-table-column label="申请人ID" prop="createdUserUuid" width="120"></el-table-column>
+
       <el-table-column label="按钮组">
         <template slot-scope="scope">
           <el-button class="table-button" @click="updateActivity(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
@@ -88,40 +88,40 @@
          <el-form-item label="活动名称:">
             <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>
       </el-form-item>
-       
+
          <el-form-item label="活动时间:">
               <el-date-picker type="date" placeholder="选择日期" v-model="formData.time" clearable></el-date-picker>
        </el-form-item>
-       
+
          <el-form-item label="活动位置:">
             <el-input v-model="formData.loaction" clearable placeholder="请输入" ></el-input>
       </el-form-item>
-       
+
          <el-form-item label="需要人数:"><el-input v-model.number="formData.neededPersonnel" clearable placeholder="请输入"></el-input>
       </el-form-item>
-       
+
          <el-form-item label="活动经费:">
             <el-input v-model="formData.budget" clearable placeholder="请输入" ></el-input>
       </el-form-item>
-       
+
          <el-form-item label="活动说明:">
             <el-input v-model="formData.description" clearable placeholder="请输入" ></el-input>
       </el-form-item>
-       
+
          <el-form-item label="申请人:">
             <el-input v-model="formData.createdBy" clearable placeholder="请输入" ></el-input>
       </el-form-item>
-       
+
          <el-form-item label="申请部门:">
              <el-select v-model="formData.reqUnion" placeholder="请选择" clearable>
                  <el-option v-for="(item,key) in unionOptions" :key="key" :label="item.label" :value="item.value"></el-option>
              </el-select>
       </el-form-item>
-       
+
          <el-form-item label="审核意见:">
             <el-input v-model="formData.managementAudit" clearable placeholder="请输入" ></el-input>
       </el-form-item>
-       
+
          <el-form-item label="申请人ID:">
             <el-input v-model="formData.createdUserUuid" clearable placeholder="请输入" ></el-input>
       </el-form-item>
@@ -145,6 +145,7 @@ import {
 } from "@/api/activity";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
 import infoList from "@/mixins/infoList";
+import {getUserInfo} from "@/api/user"
 export default {
   name: "Activity",
   mixins: [infoList],
@@ -154,6 +155,8 @@ export default {
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
+      user_uuid: "",
+      user_nick_name: "",
       multipleSelection: [],
       unionOptions:[],
           formData: {
@@ -167,7 +170,7 @@ export default {
             reqUnion:0,
             managementAudit:"",
             createdUserUuid:"",
-            
+
       }
     };
   },
@@ -192,7 +195,7 @@ export default {
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
-        this.pageSize = 10              
+        this.pageSize = 10
         this.getTableData()
       },
       handleSelectionChange(val) {
@@ -250,11 +253,11 @@ export default {
           neededPersonnel:0,
           budget:"",
           description:"",
-          createdBy:"",
+          createdBy: this.user_nick_name,
           reqUnion:0,
           managementAudit:"",
-          createdUserUuid:"",
-          
+          createdUserUuid: this.user_uuid,
+
       };
     },
     async deleteActivity(row) {
@@ -299,9 +302,19 @@ export default {
   },
   async created() {
     await this.getTableData();
-  
+
     await this.getDict("union");
-    
+
+    const userInfo = await getUserInfo();
+    const userUUID = userInfo.data[0].uuid;
+    const userNickName = userInfo.data[0].nick_name;
+    console.log("UserUUID: " + userUUID);
+    console.log("UserUUIDNickName: " + userNickName);
+    this.formData.uuid = userUUID;
+    this.user_uuid = userUUID;
+    this.formData.createdBy = userNickName;
+    this.user_nick_name = userNickName
+
 }
 };
 </script>

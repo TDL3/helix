@@ -1,5 +1,14 @@
 import service from '@/utils/request'
 
+// This will get current looged in user's info, for now ony uuid is returned from server
+export const getUserInfo = (params) => {
+    return service({
+        url: "/user/getUserInfo",
+        method: 'get',
+        params
+    })
+}
+
 // @Summary 用户登录
 // @Produce  application/json
 // @Param data body {username:"string",password:"string"}
