@@ -77,7 +77,7 @@ func GetActivitiesInfoList(info request.ActivitiesSearch) (err error, list inter
     if info.Name != "" {
         db = db.Where("`name` LIKE ?","%"+ info.Name+"%")
     }
-    if !info.Time.IsZero() {
+    if info.Time != "" {
          db = db.Where("`time` <> ?",info.Time)
     }
 	err = db.Count(&total).Error

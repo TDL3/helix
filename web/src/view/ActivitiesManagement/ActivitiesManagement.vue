@@ -5,9 +5,28 @@
         <el-form-item label="活动名称">
           <el-input placeholder="搜索条件" v-model="searchInfo.name"></el-input>
         </el-form-item>
-        <el-form-item label="活动时间">
-          <el-input placeholder="搜索条件" v-model="searchInfo.time"></el-input>
+        <el-form-item label="活动开始时间">
+<!--          <el-input placeholder="搜索条件" v-model="searchInfo.start_time"></el-input>-->
+          <el-date-picker type="date" placeholder="选择开始时间" v-model="searchInfo.start_time" clearable></el-date-picker>
         </el-form-item>
+        <el-form-item label="活动结束时间">
+<!--          <el-input placeholder="搜索条件" v-model="searchInfo.end_time"></el-input>-->
+          <el-date-picker type="date" placeholder="选择结束时间" v-model="searchInfo.end_time" clearable></el-date-picker>
+        </el-form-item>
+            <el-form-item label="审核结果" prop="approved">
+            <el-select v-model="searchInfo.approved" clear placeholder="请选择">
+                <el-option
+                    key="true"
+                    label="是"
+                    value="true">
+                </el-option>
+                <el-option
+                    key="false"
+                    label="否"
+                    value="false">
+                </el-option>
+            </el-select>
+            </el-form-item>
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
@@ -36,13 +55,22 @@
       tooltip-effect="dark"
     >
     <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column label="日期" width="180">
+    <el-table-column label="发布日期" width="180" sortable>
          <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
     </el-table-column>
 
     <el-table-column label="活动名称" prop="name" width="120"></el-table-column>
 
-    <el-table-column label="活动时间" prop="time" width="120"></el-table-column>
+<!--    <el-table-column label="活动开始时间" prop="start_time" width="120">-->
+<!--      <template slot-scope="scope">{{scope.row.start_time|formatDate}}</template>-->
+<!--    </el-table-column>-->
+
+<!--    <el-table-column label="活动结束时间" prop="end_time" width="120">-->
+<!--      <template slot-scope="scope">{{scope.row.end_time|formatDate}}</template>-->
+<!--    </el-table-column>-->
+          <el-table-column label="活动时间" prop="end_time" width="120">
+            <template slot-scope="scope">{{scope.row.start_time|formatDate}} 至 {{scope.row.end_time|formatDate}}</template>
+          </el-table-column>
 
     <el-table-column label="活动位置" prop="loaction" width="120"></el-table-column>
 
@@ -54,11 +82,15 @@
 
     <el-table-column label="申请人" prop="createdBy" width="120"></el-table-column>
 
-      <el-table-column label="申请部门" prop="reqUnion" width="120">
-        <template slot-scope="scope">
-          {{filterDict(scope.row.reqUnion,"union")}}
-        </template>
-      </el-table-column>
+    <el-table-column label="申请部门" prop="reqUnion" width="120">
+      <template slot-scope="scope">
+        {{filterDict(scope.row.reqUnion,"union")}}
+      </template>
+    </el-table-column>
+
+    <el-table-column label="审核结果" prop="approved" width="120" sortable>
+         <template slot-scope="scope">{{checkApproved(scope.row.approved, scope.row.managementAudit)}}</template>
+    </el-table-column>
 
     <el-table-column label="审核意见" prop="managementAudit" width="120"></el-table-column>
 
@@ -66,7 +98,7 @@
 
       <el-table-column label="按钮组">
         <template slot-scope="scope">
-          <el-button class="table-button" @click="updateActivity(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
+          <el-button class="table-button" @click="updateActivitiesManagement(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -89,8 +121,12 @@
             <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>
       </el-form-item>
 
-         <el-form-item label="活动时间:">
-              <el-date-picker type="date" placeholder="选择日期" v-model="formData.time" clearable></el-date-picker>
+         <el-form-item label="活动开始时间:">
+              <el-date-picker type="date" placeholder="选择日期" v-model="formData.start_time" clearable></el-date-picker>
+       </el-form-item>
+
+         <el-form-item label="活动开始时间:">
+              <el-date-picker type="date" placeholder="选择日期" v-model="formData.end_time" clearable></el-date-picker>
        </el-form-item>
 
          <el-form-item label="活动位置:">
@@ -112,10 +148,11 @@
             <el-input v-model="formData.createdBy" clearable placeholder="请输入" ></el-input>
       </el-form-item>
 
-         <el-form-item label="申请部门:">
-             <el-select v-model="formData.reqUnion" placeholder="请选择" clearable>
-                 <el-option v-for="(item,key) in unionOptions" :key="key" :label="item.label" :value="item.value"></el-option>
-             </el-select>
+         <el-form-item label="申请部门:"><el-input v-model.number="formData.reqUnion" clearable placeholder="请输入"></el-input>
+      </el-form-item>
+
+         <el-form-item label="审核结果:">
+            <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.approved" clearable ></el-switch>
       </el-form-item>
 
          <el-form-item label="审核意见:">
@@ -136,38 +173,37 @@
 
 <script>
 import {
-    createActivity,
-    deleteActivity,
-    deleteActivityByIds,
-    updateActivity,
-    findActivity,
-    getActivityList
-} from "@/api/activity";  //  此处请自行替换地址
+    createActivitiesManagement,
+    deleteActivitiesManagement,
+    deleteActivitiesManagementByIds,
+    updateActivitiesManagement,
+    findActivitiesManagement,
+    getActivitiesManagementList
+} from "@/api/ActivitiesManagement";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
 import infoList from "@/mixins/infoList";
-import {getUserInfo} from "@/api/user"
 export default {
-  name: "Activity",
+  name: "ActivitiesManagement",
   mixins: [infoList],
   data() {
     return {
-      listApi: getActivityList,
+      listApi: getActivitiesManagementList,
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
-      user_uuid: "",
-      user_nick_name: "",
       multipleSelection: [],
-      unionOptions:[],
-          formData: {
+      unionOptions: [],
+      formData: {
             name:"",
-            time:new Date(),
+            start_time:new Date(),
+            end_time:new Date(),
             loaction:"",
             neededPersonnel:0,
             budget:"",
             description:"",
             createdBy:"",
             reqUnion:0,
+            approved:false,
             managementAudit:"",
             createdUserUuid:"",
 
@@ -178,7 +214,7 @@ export default {
     formatDate: function(time) {
       if (time != null && time != "") {
         var date = new Date(time);
-        return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
+        return formatTimeToStr(date, "yyyy-MM-dd");
       } else {
         return "";
       }
@@ -192,10 +228,18 @@ export default {
     }
   },
   methods: {
+    checkApproved: (approved, mangAudit) => {
+      if (approved) return "批准"
+      if (!approved && mangAudit === "") return "审核中"
+      if(!approved && mangAudit !== "") return "否决"
+    },
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
         this.pageSize = 10
+        if (this.searchInfo.approved==""){
+          this.searchInfo.approved=null
+        }
         this.getTableData()
       },
       handleSelectionChange(val) {
@@ -207,7 +251,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-           this.deleteActivity(row);
+           this.deleteActivitiesManagement(row);
         });
       },
       async onDelete() {
@@ -223,7 +267,7 @@ export default {
           this.multipleSelection.map(item => {
             ids.push(item.ID)
           })
-        const res = await deleteActivityByIds({ ids })
+        const res = await deleteActivitiesManagementByIds({ ids })
         if (res.code == 0) {
           this.$message({
             type: 'success',
@@ -236,11 +280,11 @@ export default {
           this.getTableData()
         }
       },
-    async updateActivity(row) {
-      const res = await findActivity({ ID: row.ID });
+    async updateActivitiesManagement(row) {
+      const res = await findActivitiesManagement({ ID: row.ID });
       this.type = "update";
       if (res.code == 0) {
-        this.formData = res.data.react;
+        this.formData = res.data.reacm;
         this.dialogFormVisible = true;
       }
     },
@@ -248,20 +292,22 @@ export default {
       this.dialogFormVisible = false;
       this.formData = {
           name:"",
-          time:new Date(),
+          start_time:new Date(),
+          end_time:new Date(),
           loaction:"",
           neededPersonnel:0,
           budget:"",
           description:"",
-          createdBy: this.user_nick_name,
+          createdBy:"",
           reqUnion:0,
+          approved:false,
           managementAudit:"",
-          createdUserUuid: this.user_uuid,
+          createdUserUuid:"",
 
       };
     },
-    async deleteActivity(row) {
-      const res = await deleteActivity({ ID: row.ID });
+    async deleteActivitiesManagement(row) {
+      const res = await deleteActivitiesManagement({ ID: row.ID });
       if (res.code == 0) {
         this.$message({
           type: "success",
@@ -277,13 +323,13 @@ export default {
       let res;
       switch (this.type) {
         case "create":
-          res = await createActivity(this.formData);
+          res = await createActivitiesManagement(this.formData);
           break;
         case "update":
-          res = await updateActivity(this.formData);
+          res = await updateActivitiesManagement(this.formData);
           break;
         default:
-          res = await createActivity(this.formData);
+          res = await createActivitiesManagement(this.formData);
           break;
       }
       if (res.code == 0) {
@@ -296,24 +342,14 @@ export default {
       }
     },
     openDialog() {
-      this.type = "create";
-      this.dialogFormVisible = true;
+      this.$router.push({name: "ActivityForm"});
+      // this.type = "create";
+      // this.dialogFormVisible = true;
     }
   },
   async created() {
     await this.getTableData();
-
     await this.getDict("union");
-
-    const userInfo = await getUserInfo();
-    const userUUID = userInfo.data[0].uuid;
-    const userNickName = userInfo.data[0].nick_name;
-    console.log("UserUUID: " + userUUID);
-    console.log("UserUUIDNickName: " + userNickName);
-    this.formData.uuid = userUUID;
-    this.user_uuid = userUUID;
-    this.formData.createdBy = userNickName;
-    this.user_nick_name = userNickName
 
 }
 };

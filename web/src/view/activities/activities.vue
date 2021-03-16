@@ -42,7 +42,7 @@
 
     <el-table-column label="活动名称" prop="name" width="120"></el-table-column>
 
-    <el-table-column label="活动时间" prop="time" width="120"></el-table-column>
+    <el-table-column sortable  :sort-method=test label="活动时间" prop="time" width="120"></el-table-column>
 
     <el-table-column label="活动位置" prop="loaction" width="120"></el-table-column>
 
@@ -62,7 +62,7 @@
 
     <el-table-column label="审核意见" prop="managementAudit" width="120"></el-table-column>
 
-    <el-table-column label="申请人ID" prop="createdUserUuid" width="120"></el-table-column>
+    <el-table-column v-auth.not="888" label="申请人ID" prop="createdUserUuid" width="120"></el-table-column>
 
       <el-table-column label="按钮组">
         <template slot-scope="scope">
@@ -193,6 +193,10 @@ export default {
     }
   },
   methods: {
+    test: (a, b) => {
+      console.log(a.value, b.value);
+    },
+
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
@@ -297,8 +301,9 @@ export default {
       }
     },
     openDialog() {
-      this.type = "create";
-      this.dialogFormVisible = true;
+      this.$router.push({name: "ActivityForm"});
+      // this.type = "create";
+      this.dialogFormVisible = false;
     }
   },
   async created() {

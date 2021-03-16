@@ -5,8 +5,12 @@
                 <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>
           </el-form-item>
            
-             <el-form-item label="活动时间:">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="formData.time" clearable></el-date-picker>
+             <el-form-item label="活动开始时间:">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="formData.start_time" clearable></el-date-picker>
+           </el-form-item>
+           
+             <el-form-item label="活动开始时间:">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="formData.end_time" clearable></el-date-picker>
            </el-form-item>
            
              <el-form-item label="活动位置:">
@@ -28,10 +32,11 @@
                 <el-input v-model="formData.createdBy" clearable placeholder="请输入" ></el-input>
           </el-form-item>
            
-             <el-form-item label="申请部门:">
-                 <el-select v-model="formData.reqUnion" placeholder="请选择" clearable>
-                     <el-option v-for="(item,key) in unionOptions" :key="key" :label="item.label" :value="item.value"></el-option>
-                 </el-select>
+             <el-form-item label="申请部门:"><el-input v-model.number="formData.reqUnion" clearable placeholder="请输入"></el-input>
+          </el-form-item>
+           
+             <el-form-item label="审核结果:">
+                <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.approved" clearable ></el-switch>
           </el-form-item>
            
              <el-form-item label="审核意见:">
@@ -51,27 +56,27 @@
 
 <script>
 import {
-    createActivity,
-    updateActivity,
-    findActivity
-} from "@/api/activity";  //  此处请自行替换地址
+    createActivitiesManagement,
+    updateActivitiesManagement,
+    findActivitiesManagement
+} from "@/api/ActivitiesManagement";  //  此处请自行替换地址
 import infoList from "@/mixins/infoList";
 export default {
-  name: "Activity",
+  name: "ActivitiesManagement",
   mixins: [infoList],
   data() {
     return {
-      type: "",
-      unionOptions:[],
-          formData: {
+      type: "",formData: {
             name:"",
-            time:new Date(),
+            start_time:new Date(),
+            end_time:new Date(),
             loaction:"",
             neededPersonnel:0,
             budget:"",
             description:"",
             createdBy:"",
             reqUnion:0,
+            approved:false,
             managementAudit:"",
             createdUserUuid:"",
             
@@ -83,13 +88,13 @@ export default {
       let res;
       switch (this.type) {
         case "create":
-          res = await createActivity(this.formData);
+          res = await createActivitiesManagement(this.formData);
           break;
         case "update":
-          res = await updateActivity(this.formData);
+          res = await updateActivitiesManagement(this.formData);
           break;
         default:
-          res = await createActivity(this.formData);
+          res = await createActivitiesManagement(this.formData);
           break;
       }
       if (res.code == 0) {
@@ -106,17 +111,15 @@ export default {
   async created() {
    // 建议通过url传参获取目标数据ID 调用 find方法进行查询数据操作 从而决定本页面是create还是update 以下为id作为url参数示例
     if(this.$route.query.id){
-    const res = await findActivity({ ID: this.$route.query.id })
+    const res = await findActivitiesManagement({ ID: this.$route.query.id })
     if(res.code == 0){
-       this.formData = res.data.react
+       this.formData = res.data.reacm
        this.type == "update"
      }
     }else{
      this.type == "create"
    }
   
-    await this.getDict("union");
-    
 }
 };
 </script>

@@ -4,40 +4,45 @@
              <el-form-item label="活动名称:">
                 <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
-             <el-form-item label="活动时间:">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="formData.time" clearable></el-date-picker>
+
+             <el-form-item label="活动开始时间:">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="formData.start_time" clearable></el-date-picker>
            </el-form-item>
-           
+
+             <el-form-item label="活动开始时间:">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="formData.end_time" clearable></el-date-picker>
+           </el-form-item>
+
              <el-form-item label="活动位置:">
                 <el-input v-model="formData.loaction" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
+
              <el-form-item label="需要人数:"><el-input v-model.number="formData.neededPersonnel" clearable placeholder="请输入"></el-input>
           </el-form-item>
-           
+
              <el-form-item label="活动经费:">
                 <el-input v-model="formData.budget" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
+
              <el-form-item label="活动说明:">
                 <el-input v-model="formData.description" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
+
              <el-form-item label="申请人:">
                 <el-input v-model="formData.createdBy" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
-             <el-form-item label="申请部门:">
-                 <el-select v-model="formData.reqUnion" placeholder="请选择" clearable>
-                     <el-option v-for="(item,key) in unionOptions" :key="key" :label="item.label" :value="item.value"></el-option>
-                 </el-select>
+
+             <el-form-item label="申请部门:"><el-input v-model.number="formData.reqUnion" clearable placeholder="请输入"></el-input>
           </el-form-item>
-           
+
+             <el-form-item label="审核结果:">
+                <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.approved" clearable ></el-switch>
+          </el-form-item>
+
              <el-form-item label="审核意见:">
                 <el-input v-model="formData.managementAudit" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
+
              <el-form-item label="申请人ID:">
                 <el-input v-model="formData.createdUserUuid" clearable placeholder="请输入" ></el-input>
           </el-form-item>
@@ -60,7 +65,7 @@ import {
 import infoList from "@/mixins/infoList";
 import { mapGetters } from "vuex";
 export default {
-  name: "Activity",
+  name: "ActivitiesManagement",
   mixins: [infoList],
   props:{
       business:{
@@ -81,20 +86,20 @@ export default {
       }
    },
   data() {
-    return {
-      unionOptions:[],
-          formData: {
+    return {formData: {
             name:"",
-            time:new Date(),
+            start_time:new Date(),
+            end_time:new Date(),
             loaction:"",
             neededPersonnel:0,
             budget:"",
             description:"",
             createdBy:"",
             reqUnion:0,
+            approved:false,
             managementAudit:"",
             createdUserUuid:"",
-            
+
       }
     };
   },
@@ -120,6 +125,7 @@ export default {
                return false
             }
          }
+         return false
       },
       ...mapGetters("user", ["userInfo"])
   },
@@ -130,7 +136,7 @@ export default {
             wf:{
               workflowMoveID:this.workflowMoveID,
               businessId:0,
-              businessType:"act",
+              businessType:"acm",
               workflowProcessID:this.wf.workflowProcessID,
               workflowNodeID:this.wf.id,
               promoterID:this.userInfo.ID,
@@ -153,7 +159,7 @@ export default {
             wf:{
               workflowMoveID:this.workflowMoveID,
               businessID:this.formData.ID,
-              businessType:"act",
+              businessType:"acm",
               workflowProcessID:this.wf.workflowProcessID,
               workflowNodeID:this.wf.id,
               promoterID:this.userInfo.ID,
