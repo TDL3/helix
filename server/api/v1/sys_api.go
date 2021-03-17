@@ -19,8 +19,7 @@ func GetUserInfo(c *gin.Context) {
 	db := global.GVA_DB.Model(&model.SysUser{})
 	var Info []response.UserInfo
 	uuid := getUserUuid(c)
-	err := db.Where("uuid = ?", uuid).Select("uuid, nick_name").Find(&Info).Error
-
+	err := db.Where("uuid = ?", uuid).Select("uuid, nick_name, authority_id").Find(&Info).Error
 	if err != nil {
 		global.GVA_LOG.Error("获取用户信息失败", zap.Any("err", err))
 		response.FailWithMessage("获取用户信息失败", c)

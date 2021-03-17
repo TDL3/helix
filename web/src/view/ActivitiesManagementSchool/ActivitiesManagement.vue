@@ -30,9 +30,9 @@
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
-        <el-form-item>
-          <el-button @click="openDialog" type="primary">活动申请</el-button>
-        </el-form-item>
+        <!--        <el-form-item>-->
+        <!--          <el-button @click="openDialog" type="primary">活动申请</el-button>-->
+        <!--        </el-form-item>-->
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
             <p>确定要删除吗？</p>
@@ -40,7 +40,7 @@
               <el-button @click="deleteVisible = false" size="mini" type="text">取消</el-button>
               <el-button @click="onDelete" size="mini" type="primary">确定</el-button>
             </div>
-            <!--            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>-->
+            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>
           </el-popover>
         </el-form-item>
       </el-form>
@@ -55,7 +55,7 @@
         tooltip-effect="dark"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="发布日期" width="110" sortable>
+      <el-table-column label="发布日期" width="100">
         <template slot-scope="scope">{{ scope.row.CreatedAt|formatDate }}</template>
       </el-table-column>
 
@@ -79,7 +79,7 @@
 
       <el-table-column label="活动经费" prop="budget" width="120"></el-table-column>
 
-      <el-table-column label="活动说明" prop="description" width="180"></el-table-column>
+      <el-table-column label="活动说明" prop="description" width="120"></el-table-column>
 
       <el-table-column label="申请人" prop="createdBy" width="120"></el-table-column>
 
@@ -97,13 +97,12 @@
 
 <!--      <el-table-column label="申请人ID" prop="createdUserUuid" width="120"></el-table-column>-->
 
-      <el-table-column label="修改">
+      <el-table-column label="审核" sortable>
         <template slot-scope="scope">
-          <span v-if="user_uuid===scope.row.createdUserUuid">
-            <el-button class="table-button" @click="updateActivitiesManagement(scope.row)" size="small" type="primary"
-                       icon="el-icon-edit">变更</el-button>
+          <el-button class="table-button" @click="updateActivitiesManagement(scope.row)" size="small" type="primary"
+                     icon="el-icon-edit">{{ formatAudit(scope.row.approved, scope.row.managementAudit) }}
+          </el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
-          </span>
         </template>
       </el-table-column>
     </el-table>
@@ -119,63 +118,54 @@
         layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
 
-    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="修改活动详情">
+    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="审核" >
       <el-form :model="formData" label-position="right" label-width="80px">
-        <el-form-item label="活动名称:">
-          <el-input v-model="formData.name" clearable placeholder="请输入"></el-input>
+        <!--         <el-form-item label="活动名称:">-->
+        <!--            <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>-->
+        <!--      </el-form-item>-->
+
+        <!--         <el-form-item label="活动开始时间:">-->
+        <!--              <el-date-picker type="date" placeholder="选择日期" v-model="formData.start_time" clearable></el-date-picker>-->
+        <!--       </el-form-item>-->
+
+        <!--         <el-form-item label="活动开始时间:">-->
+        <!--              <el-date-picker type="date" placeholder="选择日期" v-model="formData.end_time" clearable></el-date-picker>-->
+        <!--       </el-form-item>-->
+
+        <!--         <el-form-item label="活动位置:">-->
+        <!--            <el-input v-model="formData.loaction" clearable placeholder="请输入" ></el-input>-->
+        <!--      </el-form-item>-->
+
+        <!--         <el-form-item label="需要人数:"><el-input v-model.number="formData.neededPersonnel" clearable placeholder="请输入"></el-input>-->
+        <!--      </el-form-item>-->
+
+        <!--         <el-form-item label="活动经费:">-->
+        <!--            <el-input v-model="formData.budget" clearable placeholder="请输入" ></el-input>-->
+        <!--      </el-form-item>-->
+
+        <!--         <el-form-item label="活动说明:">-->
+        <!--            <el-input v-model="formData.description" clearable placeholder="请输入" ></el-input>-->
+        <!--      </el-form-item>-->
+
+        <!--         <el-form-item label="申请人:">-->
+        <!--            <el-input v-model="formData.createdBy" clearable placeholder="请输入" ></el-input>-->
+        <!--      </el-form-item>-->
+
+        <!--         <el-form-item label="申请部门:"><el-input v-model.number="formData.reqUnion" clearable placeholder="请输入"></el-input>-->
+        <!--      </el-form-item>-->
+
+        <el-form-item label="审核结果:">
+          <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否"
+                     v-model="formData.approved" clearable></el-switch>
         </el-form-item>
 
-        <el-form-item label="开始时间:">
-          <el-date-picker type="date" placeholder="选择日期" v-model="formData.start_time" clearable></el-date-picker>
+        <el-form-item label="审核意见:">
+          <el-input v-model="formData.managementAudit" clearable placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="结束时间:">
-          <el-date-picker type="date" placeholder="选择日期" v-model="formData.end_time" clearable></el-date-picker>
-        </el-form-item>
-
-        <el-form-item label="活动位置:">
-          <el-input v-model="formData.loaction" clearable placeholder="请输入"></el-input>
-        </el-form-item>
-
-        <el-form-item label="需要人数:">
-          <el-input v-model.number="formData.neededPersonnel" clearable placeholder="请输入"></el-input>
-        </el-form-item>
-
-        <el-form-item label="活动经费:">
-          <el-input v-model="formData.budget" clearable placeholder="请输入"></el-input>
-        </el-form-item>
-
-        <el-form-item label="活动说明:">
-          <el-input v-model="formData.description" clearable placeholder="请输入"></el-input>
-        </el-form-item>
-
-        <el-form-item label="申请人:">
-          <el-input v-model="formData.createdBy" clearable placeholder="请输入"></el-input>
-        </el-form-item>
-
-        <el-form-item label="申请部门:">
-<!--          <el-input v-model.number="formData.reqUnion" clearable placeholder="请输入"></el-input>-->
-          <el-select v-model="formData.reqUnion" placeholder="请选择申请部门" clearable :style="{width: '100%'}">
-            <!--              <el-option v-for="(item, index) in reqUnionOptions" :key="index" :label="item.label"-->
-            <!--                         :value="item.value" :disabled="item.disabled"></el-option>-->
-            <el-option v-for="(item,key) in unionOptions" :key="key" :label="item.label"
-                       :value="item.value"></el-option>
-          </el-select>
-
-        </el-form-item>
-
-<!--        <el-form-item label="审核结果:">-->
-<!--          <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否"-->
-<!--                     v-model="formData.approved" clearable></el-switch>-->
-<!--        </el-form-item>-->
-
-<!--        <el-form-item label="审核意见:">-->
-<!--          <el-input v-model="formData.managementAudit" clearable placeholder="请输入"></el-input>-->
-<!--        </el-form-item>-->
-
-<!--        <el-form-item label="申请人ID:">-->
-<!--          <el-input v-model="formData.createdUserUuid" clearable placeholder="请输入" :disabled="true"></el-input>-->
-<!--        </el-form-item>-->
+        <!--         <el-form-item label="申请人ID:">-->
+        <!--            <el-input v-model="formData.createdUserUuid" clearable placeholder="请输入" ></el-input>-->
+        <!--      </el-form-item>-->
       </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -249,6 +239,10 @@ export default {
       if (approved) return "批准"
       if (!approved && mangAudit === "") return "审核中"
       if (!approved && mangAudit !== "") return "否决"
+    },
+    formatAudit: (approved, mangAudit) => {
+      if (!approved && mangAudit === "") return "审核"
+      else return "修改"
     },
     //条件搜索前端看此方法
     onSubmit() {

@@ -13,20 +13,20 @@
           <!--          <el-input placeholder="搜索条件" v-model="searchInfo.end_time"></el-input>-->
           <el-date-picker type="date" placeholder="选择结束时间" v-model="searchInfo.end_time" clearable></el-date-picker>
         </el-form-item>
-        <el-form-item label="审核结果" prop="approved">
-          <el-select v-model="searchInfo.approved" clear placeholder="请选择">
-            <el-option
-                key="true"
-                label="是"
-                value="true">
-            </el-option>
-            <el-option
-                key="false"
-                label="否"
-                value="false">
-            </el-option>
-          </el-select>
-        </el-form-item>
+        <!--        <el-form-item label="审核结果" prop="approved">-->
+        <!--          <el-select v-model="searchInfo.approved" clear placeholder="请选择">-->
+        <!--            <el-option-->
+        <!--                key="true"-->
+        <!--                label="是"-->
+        <!--                value="true">-->
+        <!--            </el-option>-->
+        <!--            <el-option-->
+        <!--                key="false"-->
+        <!--                label="否"-->
+        <!--                value="false">-->
+        <!--            </el-option>-->
+        <!--          </el-select>-->
+        <!--        </el-form-item>-->
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
@@ -79,30 +79,30 @@
 
       <el-table-column label="活动经费" prop="budget" width="120"></el-table-column>
 
-      <el-table-column label="活动说明" prop="description" width="180"></el-table-column>
+      <el-table-column label="活动说明" prop="description" width="380"></el-table-column>
 
-      <el-table-column label="申请人" prop="createdBy" width="120"></el-table-column>
+      <!--      <el-table-column label="申请人" prop="createdBy" width="120"></el-table-column>-->
 
-      <el-table-column label="申请部门" prop="reqUnion" width="120">
-        <template slot-scope="scope">
-          {{ filterDict(scope.row.reqUnion, "union") }}
-        </template>
-      </el-table-column>
+      <!--      <el-table-column label="申请部门" prop="reqUnion" width="120">-->
+      <!--        <template slot-scope="scope">-->
+      <!--          {{ filterDict(scope.row.reqUnion, "union") }}-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
 
-      <el-table-column label="审核结果" prop="approved" width="120" sortable>
-        <template slot-scope="scope">{{ checkApproved(scope.row.approved, scope.row.managementAudit) }}</template>
-      </el-table-column>
+      <!--      <el-table-column label="审核结果" prop="approved" width="120" sortable>-->
+      <!--        <template slot-scope="scope">{{ checkApproved(scope.row.approved, scope.row.managementAudit) }}</template>-->
+      <!--      </el-table-column>-->
 
-      <el-table-column label="审核意见" prop="managementAudit" width="120"></el-table-column>
+      <!--      <el-table-column label="审核意见" prop="managementAudit" width="120"></el-table-column>-->
 
-<!--      <el-table-column label="申请人ID" prop="createdUserUuid" width="120"></el-table-column>-->
+      <!--      <el-table-column label="申请人ID" prop="createdUserUuid" width="120"></el-table-column>-->
 
-      <el-table-column label="修改">
+      <el-table-column label="参加">
         <template slot-scope="scope">
           <span v-if="user_uuid===scope.row.createdUserUuid">
             <el-button class="table-button" @click="updateActivitiesManagement(scope.row)" size="small" type="primary"
-                       icon="el-icon-edit">变更</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
+                       icon="el-icon-edit">参加</el-button>
+            <!--          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>-->
           </span>
         </template>
       </el-table-column>
@@ -154,7 +154,7 @@
         </el-form-item>
 
         <el-form-item label="申请部门:">
-<!--          <el-input v-model.number="formData.reqUnion" clearable placeholder="请输入"></el-input>-->
+          <!--          <el-input v-model.number="formData.reqUnion" clearable placeholder="请输入"></el-input>-->
           <el-select v-model="formData.reqUnion" placeholder="请选择申请部门" clearable :style="{width: '100%'}">
             <!--              <el-option v-for="(item, index) in reqUnionOptions" :key="index" :label="item.label"-->
             <!--                         :value="item.value" :disabled="item.disabled"></el-option>-->
@@ -164,18 +164,18 @@
 
         </el-form-item>
 
-<!--        <el-form-item label="审核结果:">-->
-<!--          <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否"-->
-<!--                     v-model="formData.approved" clearable></el-switch>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="审核结果:">-->
+        <!--          <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否"-->
+        <!--                     v-model="formData.approved" clearable></el-switch>-->
+        <!--        </el-form-item>-->
 
-<!--        <el-form-item label="审核意见:">-->
-<!--          <el-input v-model="formData.managementAudit" clearable placeholder="请输入"></el-input>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="审核意见:">-->
+        <!--          <el-input v-model="formData.managementAudit" clearable placeholder="请输入"></el-input>-->
+        <!--        </el-form-item>-->
 
-<!--        <el-form-item label="申请人ID:">-->
-<!--          <el-input v-model="formData.createdUserUuid" clearable placeholder="请输入" :disabled="true"></el-input>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="申请人ID:">-->
+        <!--          <el-input v-model="formData.createdUserUuid" clearable placeholder="请输入" :disabled="true"></el-input>-->
+        <!--        </el-form-item>-->
       </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -365,6 +365,7 @@ export default {
     }
   },
   async created() {
+    this.searchInfo.approved = 1;
     await this.getTableData();
     await this.getDict("union");
 

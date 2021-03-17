@@ -281,6 +281,7 @@ func getUserAuthorityId(c *gin.Context) string {
 		return ""
 	} else {
 		waitUse := claims.(*request.CustomClaims)
+
 		return waitUse.AuthorityId
 	}
 }

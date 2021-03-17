@@ -182,8 +182,7 @@ export default {
     const userInfo = await getUserInfo();
     const userUUID = userInfo.data[0].uuid;
     const userNickName = userInfo.data[0].nick_name;
-    // console.log("UserUUID: " + userUUID);
-    // console.log("UserUUIDNickName: " + userNickName);
+    console.log(userInfo.data[0].authority_id);
     this.formData.createdUserUuid = userUUID;
     this.user_uuid = userUUID;
     this.formData.createdBy = userNickName;
