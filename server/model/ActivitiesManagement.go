@@ -21,6 +21,7 @@ type ActivitiesManagement struct {
       Approved  *bool `json:"approved" form:"approved" gorm:"column:approved;comment:"`
       ManagementAudit  string `json:"managementAudit" form:"managementAudit" gorm:"column:management_audit;comment:审核意见;type:varchar(191);size:191;"`
       CreatedUserUuid  string `json:"createdUserUuid" form:"createdUserUuid" gorm:"column:created_user_uuid;comment:申请人ID;type:varchar(191);size:191;"`
+      UserRefer uint
 }
 
 

@@ -43,7 +43,7 @@ func InitDB(c *gin.Context) {
 // @Router /init/checkdb [post]
 func CheckDB(c *gin.Context) {
 	if global.GVA_DB != nil {
-		global.GVA_LOG.Info("数据库无需初始化")
+		//global.GVA_LOG.Info("数据库无需初始化")
 		response.OkWithDetailed(gin.H{
 			"needInit": false,
 		}, "数据库无需初始化", c)

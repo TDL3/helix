@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
@@ -88,5 +89,45 @@ func GetActivitiesManagementInfoList(info request.ActivitiesManagementSearch) (e
     }
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&acms).Error
+	return err, acms, total
+}
+
+
+
+func GetAttendedActivitiesInfoList(user model.SysUser) (err error, list interface{}, total int64) {
+	//err := global.GVA_DB.Migrator().CreateConstraint(&model.SysUser{}, "fk_users_activities").Error()
+	//global.GVA_LOG.Error(err)
+	//var adminUser model.SysUser
+	////err := global.GVA_DB.Where("username = ?", "admin").Preload("Authority").First(&adminUser).Error
+	//err = global.GVA_DB.Where("username = ?", "admin").First(&adminUser).Error
+	//print(err)
+	////fmt.Println(adminUser)
+	//var act1 model.ActivitiesManagement
+	//err = global.GVA_DB.Where("id = ?", 8).First(&act1).Error
+	//print(err)
+	////global.GVA_DB.Model(model.SysUser{}).Association("Activities").Find(&act1)
+	////fmt.Println(act1)
+	//err = global.GVA_DB.Model(&adminUser).Association("Activities").Append(&act1)
+	//
+	////fmt.Println(act1)
+	//var acts []model.ActivitiesManagement
+	//////
+	//err = global.GVA_DB.Model(&user).Association("Activities").Find(&acts)
+	//fmt.Println("acts", acts)
+
+
+
+
+
+	// 创建db
+	db := global.GVA_DB.Model(&user).Association("Activities")
+	//db.Association("Activities")
+	var acms []model.ActivitiesManagement
+	//err = db.Count(&total).Error
+	//err = db.Limit(limit).Offset(offset).Association("Activities").Find(&acms)
+	//total = db.Count()
+	err = db.Find(&acms)
+	fmt.Println("acms:", acms)
+	fmt.Println("err: ", err)
 	return err, acms, total
 }

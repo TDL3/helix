@@ -1,33 +1,5 @@
 <template>
   <div>
-    <div class="search-term">
-      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
-        <el-form-item label="活动名称">
-          <el-input placeholder="搜索条件" v-model="searchInfo.name"></el-input>
-        </el-form-item>
-        <el-form-item label="活动开始时间">
-          <!--          <el-input placeholder="搜索条件" v-model="searchInfo.start_time"></el-input>-->
-          <el-date-picker type="date" placeholder="选择开始时间" v-model="searchInfo.start_time" clearable></el-date-picker>
-        </el-form-item>
-        <el-form-item label="活动结束时间">
-          <!--          <el-input placeholder="搜索条件" v-model="searchInfo.end_time"></el-input>-->
-          <el-date-picker type="date" placeholder="选择结束时间" v-model="searchInfo.end_time" clearable></el-date-picker>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="onSubmit" type="primary">查询</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-popover placement="top" v-model="deleteVisible" width="160">
-            <p>确定要删除吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button @click="deleteVisible = false" size="mini" type="text">取消</el-button>
-              <el-button @click="onDelete" size="mini" type="primary">确定</el-button>
-            </div>
-            <!--            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>-->
-          </el-popover>
-        </el-form-item>
-      </el-form>
-    </div>
     <el-table
         :data="tableData"
         @selection-change="handleSelectionChange"
@@ -65,7 +37,7 @@
       <el-table-column label="活动说明" prop="description" width="380"></el-table-column>
 
 
-      <el-table-column label="参加">
+      <el-table-column label="状态">
         <template slot-scope="scope">
           <span v-if="user_uuid===scope.row.createdUserUuid">
             <el-button class="table-button" @click="updateActivitiesManagement(scope.row)" size="small" type="primary"
@@ -75,16 +47,16 @@
       </el-table-column>
     </el-table>
 
-    <el-pagination
-        :current-page="page"
-        :page-size="pageSize"
-        :page-sizes="[10, 30, 50, 100]"
-        :style="{float:'right',padding:'20px'}"
-        :total="total"
-        @current-change="handleCurrentChange"
-        @size-change="handleSizeChange"
-        layout="total, sizes, prev, pager, next, jumper"
-    ></el-pagination>
+<!--    <el-pagination-->
+<!--        :current-page="page"-->
+<!--        :page-size="pageSize"-->
+<!--        :page-sizes="[10, 30, 50, 100]"-->
+<!--        :style="{float:'right',padding:'20px'}"-->
+<!--        :total="total"-->
+<!--        @current-change="handleCurrentChange"-->
+<!--        @size-change="handleSizeChange"-->
+<!--        layout="total, sizes, prev, pager, next, jumper"-->
+<!--    ></el-pagination>-->
 
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="确定加入吗？">
       <el-form :model="formData" label-position="right" label-width="20px">
@@ -103,7 +75,7 @@ import {
   deleteActivitiesManagement,
   deleteActivitiesManagementByIds,
   findActivitiesManagement,
-  getActivitiesManagementList,
+  getAttendedActivitiesInfoList,
 } from "@/api/ActivitiesManagement"; //  此处请自行替换地址
 import {formatTimeToStr} from "@/utils/date";
 import infoList from "@/mixins/infoList";
@@ -114,7 +86,7 @@ export default {
   mixins: [infoList],
   data() {
     return {
-      listApi: getActivitiesManagementList,
+      listApi: getAttendedActivitiesInfoList,
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,

@@ -98,3 +98,14 @@ export const createActivitiesManagement = (data) => {
          params
      })
  }
+
+
+
+
+export const getAttendedActivitiesInfoList = (params) => {
+    return service({
+        url: "/acm/getAttendedActivitiesInfoList",
+        method: 'get',
+        params
+    })
+}

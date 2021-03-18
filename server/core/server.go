@@ -28,6 +28,14 @@ func RunWindowsServer() {
 	time.Sleep(10 * time.Microsecond)
 	global.GVA_LOG.Info("server run success on ", zap.String("address", address))
 
+
+
+
+
+
+
+
+
 	fmt.Printf(`swagger doc: http://127.0.0.1%s/swagger/index.html`, address)
 	global.GVA_LOG.Error(s.ListenAndServe().Error())
 }
