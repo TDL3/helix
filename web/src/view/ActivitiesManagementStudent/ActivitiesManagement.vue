@@ -30,14 +30,18 @@
     </div>
     <el-table
         :data="tableData"
-        @selection-change="handleSelectionChange"
         border
         ref="multipleTable"
         stripe
         style="width: 100%"
         tooltip-effect="dark"
+        :row-class-name="tableRowClassName"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column label="状态" width="120">
+        <template slot-scope="scope">
+          {{scope.row|changeLabel}}
+        </template>
+      </el-table-column>
       <el-table-column label="发布日期" width="110" sortable>
         <template slot-scope="scope">{{ scope.row.CreatedAt|formatDate }}</template>
       </el-table-column>
@@ -60,14 +64,16 @@
 
       <el-table-column label="需要人数" prop="neededPersonnel" width="120"></el-table-column>
 
-      <el-table-column label="活动经费" prop="budget" width="120"></el-table-column>
+      <el-table-column label="活动分数" prop="score" width="120"></el-table-column>
+
+<!--      <el-table-column label="活动经费" prop="budget" width="120"></el-table-column>-->
 
       <el-table-column label="活动说明" prop="description" width="380"></el-table-column>
 
 
       <el-table-column label="参加">
         <template slot-scope="scope">
-          <span v-if="user_uuid===scope.row.createdUserUuid">
+          <span v-if="isAttendable(scope.row)">
             <el-button class="table-button" @click="updateActivitiesManagement(scope.row)" size="small" type="primary"
                        icon="el-icon-edit">参加</el-button>
           </span>
@@ -85,7 +91,7 @@
         @size-change="handleSizeChange"
         layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
-
+    <!--    TODO make dialog smaller   -->
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="确定加入吗？">
       <el-form :model="formData" label-position="right" label-width="20px">
 
@@ -104,10 +110,12 @@ import {
   deleteActivitiesManagementByIds,
   findActivitiesManagement,
   getActivitiesManagementList,
+  updateAttendedActivitiesInfoList,
 } from "@/api/ActivitiesManagement"; //  此处请自行替换地址
 import {formatTimeToStr} from "@/utils/date";
 import infoList from "@/mixins/infoList";
 import {getUserInfo} from "@/api/user";
+import {checkDB} from "@/api/initdb";
 
 export default {
   name: "ActivitiesManagement",
@@ -139,6 +147,21 @@ export default {
     };
   },
   filters: {
+    changeLabel: (row) => {
+      let today = new Date()
+      let end_time = new Date(row.end_time)
+      let start_time = new Date(row.start_time)
+
+      // console.log("today: ", today)
+      // console.log("end_time: ", end_time)
+      // console.log(today >= end_time)
+      // expired
+      if (today >= end_time) return "已结束"
+      // active
+      if (today >= start_time && today <= end_time) return "进行中"
+      // not yet active
+      if (today <= start_time) return "未开始"
+    },
     formatDate: function (time) {
       if (time != null && time != "") {
         var date = new Date(time);
@@ -156,6 +179,39 @@ export default {
     }
   },
   methods: {
+    // eslint-disable-next-line no-unused-vars
+    tableRowClassName({row, rowIndex}) {
+      switch (this.checkExpired(row)) {
+        case(0):
+          return "warning-row"
+        case(1):
+          return "success-row"
+        case(2):
+          return ""
+        default:
+          return ""
+      }
+    },
+    checkExpired: (row) => {
+      let today = new Date()
+      let end_time = new Date(row.end_time)
+      let start_time = new Date(row.start_time)
+
+      // console.log("today: ", today)
+      // console.log("end_time: ", end_time)
+      // console.log(today >= end_time)
+      // expired
+      if (today >= end_time) return 0
+      // active
+      if (today >= start_time && today <= end_time) return 1
+      // not yet active
+      if (today <= start_time) return 2
+
+    },
+    isAttendable(row) {
+      return this.checkExpired(row) === 2;
+
+    },
     checkApproved: (approved, mangAudit) => {
       if (approved) return "批准"
       if (!approved && mangAudit === "") return "审核中"
@@ -249,6 +305,7 @@ export default {
     },
     async enterDialog() {
       let res;
+      res = await updateAttendedActivitiesInfoList(this.formData);
       // switch (this.type) {
       //   case "create":
       //     res = await createActivitiesManagement(this.formData);
@@ -288,4 +345,11 @@ export default {
 </script>
 
 <style>
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
+}
 </style>

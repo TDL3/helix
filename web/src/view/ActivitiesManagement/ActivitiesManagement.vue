@@ -47,14 +47,17 @@
     </div>
     <el-table
         :data="tableData"
-        @selection-change="handleSelectionChange"
         border
         ref="multipleTable"
-        stripe
         style="width: 100%"
         tooltip-effect="dark"
+        :row-class-name="tableRowClassName"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column label="状态" width="70">
+        <template slot-scope="scope">
+          {{scope.row|changeLabel}}
+        </template>
+      </el-table-column>
       <el-table-column label="发布日期" width="110" sortable>
         <template slot-scope="scope">{{ scope.row.CreatedAt|formatDate }}</template>
       </el-table-column>
@@ -77,6 +80,8 @@
 
       <el-table-column label="需要人数" prop="neededPersonnel" width="120"></el-table-column>
 
+      <el-table-column label="活动分数" prop="score" width="120"></el-table-column>
+
       <el-table-column label="活动经费" prop="budget" width="120"></el-table-column>
 
       <el-table-column label="活动说明" prop="description" width="180"></el-table-column>
@@ -95,7 +100,7 @@
 
       <el-table-column label="审核意见" prop="managementAudit" width="120"></el-table-column>
 
-<!--      <el-table-column label="申请人ID" prop="createdUserUuid" width="120"></el-table-column>-->
+      <!--      <el-table-column label="申请人ID" prop="createdUserUuid" width="120"></el-table-column>-->
 
       <el-table-column label="修改">
         <template slot-scope="scope">
@@ -141,6 +146,10 @@
           <el-input v-model.number="formData.neededPersonnel" clearable placeholder="请输入"></el-input>
         </el-form-item>
 
+        <el-form-item label="活动分数:">
+          <el-input v-model.number="formData.score" clearable placeholder="请输入"></el-input>
+        </el-form-item>
+
         <el-form-item label="活动经费:">
           <el-input v-model="formData.budget" clearable placeholder="请输入"></el-input>
         </el-form-item>
@@ -154,7 +163,7 @@
         </el-form-item>
 
         <el-form-item label="申请部门:">
-<!--          <el-input v-model.number="formData.reqUnion" clearable placeholder="请输入"></el-input>-->
+          <!--          <el-input v-model.number="formData.reqUnion" clearable placeholder="请输入"></el-input>-->
           <el-select v-model="formData.reqUnion" placeholder="请选择申请部门" clearable :style="{width: '100%'}">
             <!--              <el-option v-for="(item, index) in reqUnionOptions" :key="index" :label="item.label"-->
             <!--                         :value="item.value" :disabled="item.disabled"></el-option>-->
@@ -164,18 +173,18 @@
 
         </el-form-item>
 
-<!--        <el-form-item label="审核结果:">-->
-<!--          <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否"-->
-<!--                     v-model="formData.approved" clearable></el-switch>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="审核结果:">-->
+        <!--          <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否"-->
+        <!--                     v-model="formData.approved" clearable></el-switch>-->
+        <!--        </el-form-item>-->
 
-<!--        <el-form-item label="审核意见:">-->
-<!--          <el-input v-model="formData.managementAudit" clearable placeholder="请输入"></el-input>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="审核意见:">-->
+        <!--          <el-input v-model="formData.managementAudit" clearable placeholder="请输入"></el-input>-->
+        <!--        </el-form-item>-->
 
-<!--        <el-form-item label="申请人ID:">-->
-<!--          <el-input v-model="formData.createdUserUuid" clearable placeholder="请输入" :disabled="true"></el-input>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="申请人ID:">-->
+        <!--          <el-input v-model="formData.createdUserUuid" clearable placeholder="请输入" :disabled="true"></el-input>-->
+        <!--        </el-form-item>-->
       </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -217,6 +226,7 @@ export default {
         loaction: "",
         neededPersonnel: 0,
         budget: "",
+        score: 0,
         description: "",
         createdBy: "",
         reqUnion: 0,
@@ -228,6 +238,21 @@ export default {
     };
   },
   filters: {
+    changeLabel: (row) => {
+      let today = new Date()
+      let end_time = new Date(row.end_time)
+      let start_time = new Date(row.start_time)
+
+      // console.log("today: ", today)
+      // console.log("end_time: ", end_time)
+      // console.log(today >= end_time)
+      // expired
+      if (today >= end_time) return "已结束"
+      // active
+      if (today >= start_time && today <= end_time) return "进行中"
+      // not yet active
+      if (today <= start_time) return "未开始"
+    },
     formatDate: function (time) {
       if (time != null && time != "") {
         var date = new Date(time);
@@ -245,6 +270,35 @@ export default {
     }
   },
   methods: {
+    // eslint-disable-next-line no-unused-vars
+    tableRowClassName({row, rowIndex}) {
+      switch (this.checkExpired(row)) {
+        case(0):
+          return "warning-row"
+        case(1):
+          return "success-row"
+        case(2):
+          return ""
+        default:
+          return ""
+      }
+    },
+    checkExpired: (row) => {
+      let today = new Date()
+      let end_time = new Date(row.end_time)
+      let start_time = new Date(row.start_time)
+
+      // console.log("today: ", today)
+      // console.log("end_time: ", end_time)
+      // console.log(today >= end_time)
+      // expired
+      if (today >= end_time) return 0
+      // active
+      if (today >= start_time && today <= end_time) return 1
+      // not yet active
+      if (today <= start_time) return 2
+
+    },
     checkApproved: (approved, mangAudit) => {
       if (approved) return "批准"
       if (!approved && mangAudit === "") return "审核中"
@@ -376,4 +430,11 @@ export default {
 </script>
 
 <style>
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
+}
 </style>

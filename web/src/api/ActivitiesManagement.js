@@ -109,3 +109,12 @@ export const getAttendedActivitiesInfoList = (params) => {
         params
     })
 }
+
+
+export const updateAttendedActivitiesInfoList = (params) => {
+    return service({
+        url: "/acm/updateAttendedActivitiesInfoList",
+        method: 'put',
+        params
+    })
+}

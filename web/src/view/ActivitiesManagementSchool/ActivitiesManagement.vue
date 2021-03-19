@@ -77,6 +77,8 @@
 
       <el-table-column label="需要人数" prop="neededPersonnel" width="120"></el-table-column>
 
+      <el-table-column label="活动分数" prop="score" width="120"></el-table-column>
+
       <el-table-column label="活动经费" prop="budget" width="120"></el-table-column>
 
       <el-table-column label="活动说明" prop="description" width="120"></el-table-column>

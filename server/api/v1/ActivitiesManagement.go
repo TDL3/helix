@@ -2,12 +2,12 @@ package v1
 
 import (
 	"gin-vue-admin/global"
-    "gin-vue-admin/model"
-    "gin-vue-admin/model/request"
-    "gin-vue-admin/model/response"
-    "gin-vue-admin/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
+	"gin-vue-admin/model"
+	"gin-vue-admin/model/request"
+	"gin-vue-admin/model/response"
+	"gin-vue-admin/service"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 // @Tags ActivitiesManagement
@@ -149,3 +149,18 @@ func GetAttendedActivitiesInfoList(c *gin.Context) {
 	}
 }
 
+func UpdateAttendedActivitiesInfoList(c *gin.Context) {
+	var user model.SysUser
+	uuid := getUserUuid(c)
+	global.GVA_DB.Model(&model.SysUser{}).Where("uuid = ?", uuid).First(&user)
+
+	var acm model.ActivitiesManagement
+	_ = c.ShouldBindQuery(&acm)
+
+	if err := service.UpdateAttendedActivities(user, acm); err != nil {
+		global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
+		response.FailWithMessage("更新失败", c)
+	} else {
+		response.OkWithMessage("更新成功", c)
+	}
+}

@@ -15,13 +15,14 @@ type ActivitiesManagement struct {
       Loaction  string `json:"loaction" form:"loaction" gorm:"column:loaction;comment:活动位置;type:varchar(120);size:120;"`
       NeededPersonnel  int `json:"neededPersonnel" form:"neededPersonnel" gorm:"column:needed_personnel;comment:需要人数;type:bigint;size:19;"`
       Budget  string `json:"budget" form:"budget" gorm:"column:budget;comment:活动经费;type:varchar(1000);size:1000;"`
+      Score int `json:"score" form:"score" gorm:"column:score;comment:活动分数;type:int;size:20;"`
       Description  string `json:"description" form:"description" gorm:"column:description;comment:活动说明;type:varchar(1000);size:1000;"`
       CreatedBy  string `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:申请人;type:varchar(191);size:191;"`
       ReqUnion  int `json:"reqUnion" form:"reqUnion" gorm:"column:req_union;comment:申请部门;type:bigint;size:19;"`
       Approved  *bool `json:"approved" form:"approved" gorm:"column:approved;comment:"`
       ManagementAudit  string `json:"managementAudit" form:"managementAudit" gorm:"column:management_audit;comment:审核意见;type:varchar(191);size:191;"`
       CreatedUserUuid  string `json:"createdUserUuid" form:"createdUserUuid" gorm:"column:created_user_uuid;comment:申请人ID;type:varchar(191);size:191;"`
-      UserRefer uint
+      UserRefer []*SysUser `gorm:"many2many:UserRefer"`
 }
 
 

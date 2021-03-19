@@ -95,6 +95,22 @@ func GetActivitiesManagementInfoList(info request.ActivitiesManagementSearch) (e
 
 
 func GetAttendedActivitiesInfoList(user model.SysUser) (err error, list interface{}, total int64) {
+	db := global.GVA_DB.Model(&user).Association("Activities")
+	//db.Association("Activities")
+	var acms []model.ActivitiesManagement
+	//err = db.Count(&total).Error
+	//err = db.Limit(limit).Offset(offset).Association("Activities").Find(&acms)
+	//total = db.Count()
+	err = db.Find(&acms)
+	fmt.Println("acms:", acms)
+	fmt.Println("err: ", err)
+	return err, acms, total
+}
+
+
+
+func UpdateAttendedActivities(user model.SysUser, activity model.ActivitiesManagement) (err error) {
+	err = global.GVA_DB.Model(&user).Association("Activities").Append(&activity)
 	//err := global.GVA_DB.Migrator().CreateConstraint(&model.SysUser{}, "fk_users_activities").Error()
 	//global.GVA_LOG.Error(err)
 	//var adminUser model.SysUser
@@ -117,17 +133,17 @@ func GetAttendedActivitiesInfoList(user model.SysUser) (err error, list interfac
 
 
 
-
-
 	// 创建db
-	db := global.GVA_DB.Model(&user).Association("Activities")
-	//db.Association("Activities")
-	var acms []model.ActivitiesManagement
-	//err = db.Count(&total).Error
-	//err = db.Limit(limit).Offset(offset).Association("Activities").Find(&acms)
-	//total = db.Count()
-	err = db.Find(&acms)
-	fmt.Println("acms:", acms)
-	fmt.Println("err: ", err)
-	return err, acms, total
+	//db := global.GVA_DB.Model(&user).Association("Activities")
+	////db.Association("Activities")
+	//var acms []model.ActivitiesManagement
+	////err = db.Count(&total).Error
+	////err = db.Limit(limit).Offset(offset).Association("Activities").Find(&acms)
+	////total = db.Count()
+	//err = db.Find(&acms)
+	//fmt.Println("acms:", acms)
+	//fmt.Println("err: ", err)
+	//return err, acms, total
+
+	return err
 }

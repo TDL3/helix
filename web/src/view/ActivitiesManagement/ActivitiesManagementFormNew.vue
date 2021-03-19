@@ -11,7 +11,7 @@
         <el-col :span="12">
           <el-form-item label="活动时间" prop="date_picker">
             <el-date-picker @blur="setDate" type="daterange" v-model="date_picker" format="yyyy-MM-dd"
-                             :style="{width: '100%'}" start-placeholder="开始日期"
+                            :style="{width: '100%'}" start-placeholder="开始日期"
                             end-placeholder="结束日期" range-separator="至" clearable></el-date-picker>
           </el-form-item>
         </el-col>
@@ -27,6 +27,13 @@
                       :style="{width: '100%'}"></el-input>
           </el-form-item>
         </el-col>
+        <br>
+        <el-col :span="8">
+          <el-form-item label="活动分数:">
+            <el-input v-model.number="formData.score" clearable placeholder="请输入"></el-input>
+          </el-form-item>
+        </el-col>
+
         <el-col :span="24">
           <el-form-item label="活动经费" prop="budget">
             <el-input v-model="formData.budget" type="textarea" placeholder="请输入活动经费"
@@ -48,8 +55,8 @@
         <el-col :span="8">
           <el-form-item label="申请部门" prop="reqUnion">
             <el-select v-model="formData.reqUnion" placeholder="请选择申请部门" clearable :style="{width: '100%'}">
-<!--              <el-option v-for="(item, index) in reqUnionOptions" :key="index" :label="item.label"-->
-<!--                         :value="item.value" :disabled="item.disabled"></el-option>-->
+              <!--              <el-option v-for="(item, index) in reqUnionOptions" :key="index" :label="item.label"-->
+              <!--                         :value="item.value" :disabled="item.disabled"></el-option>-->
               <el-option v-for="(item,key) in unionOptions" :key="key" :label="item.label"
                          :value="item.value"></el-option>
             </el-select>
@@ -115,18 +122,19 @@ export default {
       date_picker: undefined,
       date_picker_validator: undefined,
       formData: {
-        name:"",
-        start_time:new Date(),
-        end_time:new Date(),
-        loaction:"",
-        neededPersonnel:0,
-        budget:"",
-        description:"",
-        createdBy:"",
-        reqUnion:0,
-        approved:false,
-        managementAudit:"",
-        createdUserUuid:"",
+        name: "",
+        start_time: new Date(),
+        end_time: new Date(),
+        loaction: "",
+        neededPersonnel: 0,
+        budget: "",
+        description: "",
+        createdBy: "",
+        reqUnion: 0,
+        approved: false,
+        managementAudit: "",
+        createdUserUuid: "",
+        score: 0,
       },
       rules: {
         name: [{
@@ -195,7 +203,8 @@ export default {
     this.formData.createdBy = userNickName;
     this.user_nick_name = userNickName
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     setDate() {
       // console.log(1)
