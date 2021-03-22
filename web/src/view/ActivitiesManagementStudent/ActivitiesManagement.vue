@@ -115,7 +115,6 @@ import {
 import {formatTimeToStr} from "@/utils/date";
 import infoList from "@/mixins/infoList";
 import {getUserInfo} from "@/api/user";
-import {checkDB} from "@/api/initdb";
 
 export default {
   name: "ActivitiesManagement",

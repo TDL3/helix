@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
@@ -102,8 +101,8 @@ func GetAttendedActivitiesInfoList(user model.SysUser) (err error, list interfac
 	//err = db.Limit(limit).Offset(offset).Association("Activities").Find(&acms)
 	//total = db.Count()
 	err = db.Find(&acms)
-	fmt.Println("acms:", acms)
-	fmt.Println("err: ", err)
+	//fmt.Println("acms:", acms)
+	//fmt.Println("err: ", err)
 	return err, acms, total
 }
 

@@ -5,6 +5,7 @@ import (
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
+	"gin-vue-admin/model/response"
 	"gin-vue-admin/utils"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
@@ -129,4 +130,45 @@ func FindUserByUuid(uuid string) (err error, user *model.SysUser) {
 		return errors.New("用户不存在"), &u
 	}
 	return nil, &u
+}
+
+
+func GetStudentUserScoreList(info request.PageInfo) (err error, list interface{}, total int64) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	db := global.GVA_DB.Model(&model.SysUser{})
+	var studentList []response.UserScoreInfo
+	err = db.Count(&total).Error
+	// Query students only
+	//err = db.Limit(limit).Offset(offset).Preload("Authority").Where("authority_id = ?", 1000).Find(&studentList).Error
+
+	rows, err := db.Limit(limit).Offset(offset).Preload("Authority").Where("authority_id = ?", 1000).Rows()
+
+	if err == nil {
+		defer rows.Close()
+
+		for rows.Next() {
+			// In this case user is student, since all users with an authority id of 1000 is considered student
+			var user model.SysUser
+			var activities []model.ActivitiesManagement
+			var userScoreTotal int
+			// ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct
+			err = db.ScanRows(rows, &user)
+			//fmt.Println("user: ", user)
+			err = global.GVA_DB.Model(&user).Association("Activities").Find(&activities)
+			for _, activity := range activities {
+				userScoreTotal += activity.Score
+				//fmt.Println("activity score: ", activity.Score)
+			}
+			student := response.UserScoreInfo{
+				HeaderImg: user.HeaderImg,
+				NickName: user.NickName,
+				Score: userScoreTotal,
+				Username: user.Username,
+			}
+			studentList = append(studentList, student)
+		}
+		//fmt.Println(studentList)
+	}
+	return err, studentList, total
 }

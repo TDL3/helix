@@ -4,40 +4,40 @@
              <el-form-item label="活动名称:">
                 <el-input v-model="formData.name" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
+
              <el-form-item label="活动时间:">
                   <el-date-picker type="date" placeholder="选择日期" v-model="formData.time" clearable></el-date-picker>
            </el-form-item>
-           
+
              <el-form-item label="活动位置:">
                 <el-input v-model="formData.loaction" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
+
              <el-form-item label="需要人数:"><el-input v-model.number="formData.neededPersonnel" clearable placeholder="请输入"></el-input>
           </el-form-item>
-           
+
              <el-form-item label="活动经费:">
                 <el-input v-model="formData.budget" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
+
              <el-form-item label="活动说明:">
                 <el-input v-model="formData.description" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
+
              <el-form-item label="申请人:">
                 <el-input v-model="formData.createdBy" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
+
              <el-form-item label="申请部门:">
                  <el-select v-model="formData.reqUnion" placeholder="请选择" clearable>
                      <el-option v-for="(item,key) in unionOptions" :key="key" :label="item.label" :value="item.value"></el-option>
                  </el-select>
           </el-form-item>
-           
+
              <el-form-item label="审核意见:">
                 <el-input v-model="formData.managementAudit" clearable placeholder="请输入" ></el-input>
           </el-form-item>
-           
+
              <el-form-item label="申请人ID:">
                 <el-input v-model="formData.createdUserUuid" clearable placeholder="请输入" ></el-input>
           </el-form-item>
@@ -94,7 +94,7 @@ export default {
             reqUnion:0,
             managementAudit:"",
             createdUserUuid:"",
-            
+
       }
     };
   },
@@ -120,6 +120,7 @@ export default {
                return false
             }
          }
+         return false
       },
       ...mapGetters("user", ["userInfo"])
   },

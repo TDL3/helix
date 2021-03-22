@@ -16,5 +16,7 @@ func InitUserRouter(Router *gin.RouterGroup) {
 		UserRouter.DELETE("deleteUser", v1.DeleteUser)           // 删除用户
 		UserRouter.PUT("setUserInfo", v1.SetUserInfo)            // 设置用户信息
 		UserRouter.GET("getUserInfo", v1.GetUserInfo) 			 // 获取当前登录用户的信息
+		UserRouter.POST("getStudentUserScoreList", v1.GetStudentUserScoreList) 			 // 获取所有学生的成绩列表
+
 	}
 }

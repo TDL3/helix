@@ -9,6 +9,15 @@ export const getUserInfo = (params) => {
     })
 }
 
+// This will get all students score list
+export const getStudentUserScoreList = (data) => {
+    return service({
+        url: "/user/getStudentUserScoreList",
+        method: 'post',
+        data: data
+    })
+}
+
 // @Summary 用户登录
 // @Produce  application/json
 // @Param data body {username:"string",password:"string"}
