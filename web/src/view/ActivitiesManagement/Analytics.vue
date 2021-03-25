@@ -1,56 +1,12 @@
-
-<!--<script>-->
-<!--import { Bar } from 'vue-chartjs'-->
-
-<!--export default {-->
-<!--  extends: Bar,-->
-<!--  data: () => ({-->
-<!--    chartdata: {-->
-<!--      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],-->
-<!--      datasets: [-->
-<!--        {-->
-<!--          backgroundColor: '#f87979',-->
-<!--          barPercentage: 0.5,-->
-<!--          barThickness: 30,-->
-<!--          maxBarThickness: 40,-->
-<!--          minBarLength: 2,-->
-<!--          data: [10, 20, 30, 40, 50, 60, 70, 120]-->
-<!--        }-->
-<!--      ]-->
-<!--    },-->
-<!--    options: {-->
-<!--      responsive: true,-->
-<!--      maintainAspectRatio: false,-->
-<!--      scales: {-->
-<!--        yAxes: [{-->
-<!--          ticks: {-->
-<!--            beginAtZero: true-->
-<!--          }-->
-<!--        }]-->
-<!--      }-->
-<!--    }-->
-
-<!--  }),-->
-
-<!--  mounted () {-->
-<!--    this.renderChart(this.chartdata, this.options)-->
-<!--  }-->
-<!--}-->
-
-<!--</script>-->
-
-<!--<style scoped>-->
-
-<!--</style>-->
-
-
 <template>
-<!--  <div class="container">-->
+  <div class="container">
     <bar-chart
         v-if="loaded"
         :chartdata="chartdata"
         :options="chartoptions"/>
-<!--  </div>-->
+    <el-button @click="getData">getData</el-button>
+  </div>
+
 </template>
 
 <script>
@@ -62,40 +18,32 @@ export default {
   components: { BarChart },
   data: () => ({
     listApi: getStudentUserScoreList,
+    scores: [],
+    names: [],
     loaded: false,
     chartdata: null,
     chartoptions: null,
   }),
   async mounted () {
     this.loaded = false
-    try {
       this.chartdata ={
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        labels: this.names,
             datasets: [
           {
-            label: 'Data One',
+            label: '学生总成绩',
             backgroundColor: '#f87979',
             barPercentage: 0.5,
             barThickness: 30,
             maxBarThickness: 40,
             minBarLength: 2,
-            data: [10, 20, 30, 40, 50, 60, 70, 120, 220, 320, 500, 1024]
-          },
-              {
-                label: 'Data Two',
-                backgroundColor: '#f87979',
-                barPercentage: 0.5,
-                barThickness: 30,
-                maxBarThickness: 40,
-                minBarLength: 2,
-                data: [10, 20, 30, 40, 50, 60, 70, 120, 220, 320, 500, 1024]
-              }
+            data: this.scores
+          }
         ]
       }
       this.chartoptions = {
         responsive: true,
-            maintainAspectRatio: false,
-            scales: {
+        maintainAspectRatio: false,
+        scales: {
           yAxes: [{
             ticks: {
               beginAtZero: true
@@ -103,15 +51,22 @@ export default {
           }]
         }
       }
-      // const { userlist } = await fetch('/api/userlist')
-      // this.chartdata = userlist
-      this.loaded = true
+    try {
+      await this.getData();
+      this.loaded = true;
     } catch (e) {
       console.error(e)
     }
   },
-  async created() {
-    console.log(await getStudentUserScoreList({"page":1,"pageSize":10}))
+  methods: {
+    getData: async function () {
+      const scoreList = await getStudentUserScoreList({"page":1,"pageSize":10});
+      const dataArray = scoreList.data.list;
+      if (!dataArray) return;
+      dataArray.forEach((score) => this.names.push(score.nickName));
+      dataArray.forEach((score) => this.scores.push(score.score));
+    },
   }
+
 }
 </script>
