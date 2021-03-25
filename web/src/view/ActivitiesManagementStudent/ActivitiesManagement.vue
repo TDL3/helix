@@ -32,7 +32,6 @@
         :data="tableData"
         border
         ref="multipleTable"
-        stripe
         style="width: 100%"
         tooltip-effect="dark"
         :row-class-name="tableRowClassName"
@@ -73,10 +72,10 @@
 
       <el-table-column label="参加">
         <template slot-scope="scope">
-          <span v-if="isAttendable(scope.row)">
+<!--          <span v-if="isAttendable(scope.row)">-->
             <el-button class="table-button" @click="updateActivitiesManagement(scope.row)" size="small" type="primary"
                        icon="el-icon-edit">参加</el-button>
-          </span>
+<!--          </span>-->
         </template>
       </el-table-column>
     </el-table>

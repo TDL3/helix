@@ -13,7 +13,7 @@ import router from '@/router/index'
 import '../node_modules/timeline-vuejs/dist/timeline-vuejs.css'
 
 import '@/permission'
-import { store } from '@/store/index'
+import { store } from '@/store'
 Vue.config.productionTip = false
 
 // 路由守卫
