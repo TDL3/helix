@@ -1,8 +1,8 @@
 package upload
 import (
 	"errors"
-	"gin-vue-admin/global"
-	"gin-vue-admin/utils"
+	"github.com/helix/global"
+	"github.com/helix/utils"
 	"go.uber.org/zap"
 	"io"
 	"mime/multipart"

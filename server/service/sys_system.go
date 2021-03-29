@@ -1,10 +1,10 @@
 package service
 
 import (
-	"gin-vue-admin/config"
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
-	"gin-vue-admin/utils"
+	"github.com/helix/config"
+	"github.com/helix/global"
+	"github.com/helix/model"
+	"github.com/helix/utils"
 	"go.uber.org/zap"
 )
 

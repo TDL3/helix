@@ -1,10 +1,10 @@
 package initialize
 
 import (
-	_ "gin-vue-admin/docs"
-	"gin-vue-admin/global"
-	"gin-vue-admin/middleware"
-	"gin-vue-admin/router"
+	_ "github.com/helix/docs"
+	"github.com/helix/global"
+	"github.com/helix/middleware"
+	"github.com/helix/router"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -18,12 +18,12 @@ func Routers() *gin.Engine {
 	//var Router = gin.Default()
 	//Use MiddleWare Zap
 	var Router = gin.New()
-	Router.Use(middleware.ZapLogger(), gin.Recovery())
+	//Router.Use(middleware.ZapLogger(), gin.Recovery())
 	Router.StaticFS(global.GVA_CONFIG.Local.Path, http.Dir(global.GVA_CONFIG.Local.Path)) // 为用户头像和文件提供静态地址
 	// Router.Use(middleware.LoadTls())  // 打开就能玩https了
-	global.GVA_LOG.Info("use middleware logger")
+	//global.GVA_LOG.Info("use middleware logger")
 	// 跨域
-	//Router.Use(middleware.Cors()) // 如需跨域可以打开
+	Router.Use(middleware.Cors()) // 如需跨域可以打开
 	global.GVA_LOG.Info("use middleware cors")
 	Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	global.GVA_LOG.Info("register swagger handler")

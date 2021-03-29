@@ -1,6 +1,6 @@
 package request
 
-import "gin-vue-admin/model"
+import "github.com/helix/model"
 
 type WorkflowProcessSearch struct {
 	model.WorkflowProcess

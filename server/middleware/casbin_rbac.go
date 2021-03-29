@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/model/request"
-	"gin-vue-admin/model/response"
-	"gin-vue-admin/service"
+	"github.com/helix/global"
+	"github.com/helix/model/request"
+	"github.com/helix/model/response"
+	"github.com/helix/service"
 	"github.com/gin-gonic/gin"
 )
 

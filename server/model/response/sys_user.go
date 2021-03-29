@@ -1,7 +1,7 @@
 package response
 
 import (
-	"gin-vue-admin/model"
+	"github.com/helix/model"
 )
 
 type SysUserResponse struct {

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"gin-vue-admin/core"
-	"gin-vue-admin/global"
-	"gin-vue-admin/initialize"
+	"github.com/helix/core"
+	"github.com/helix/global"
+	"github.com/helix/initialize"
 )
 
 // @title Swagger Example API

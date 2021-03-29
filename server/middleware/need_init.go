@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/model/response"
+	"github.com/helix/global"
+	"github.com/helix/model/response"
 	"github.com/gin-gonic/gin"
 )
 

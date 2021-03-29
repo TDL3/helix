@@ -3,8 +3,8 @@ package service
 import (
 	"errors"
 	"fmt"
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
+	"github.com/helix/global"
+	"github.com/helix/model"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"strconv"
 )

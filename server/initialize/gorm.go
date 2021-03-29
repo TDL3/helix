@@ -1,9 +1,9 @@
 package initialize
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/initialize/internal"
-	"gin-vue-admin/model"
+	"github.com/helix/global"
+	"github.com/helix/initialize/internal"
+	"github.com/helix/model"
 	"os"
 
 	"go.uber.org/zap"

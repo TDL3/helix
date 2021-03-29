@@ -2,7 +2,7 @@ package upload
 
 import (
 	"errors"
-	"gin-vue-admin/global"
+	"github.com/helix/global"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"go.uber.org/zap"
 	"mime/multipart"

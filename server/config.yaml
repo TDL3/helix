@@ -94,7 +94,7 @@ tencent-cos:
   secret-id: 'xxxxxxxx'
   secret-key: 'xxxxxxxx'
   base-url: 'https://gin.vue.admin'
-  path-prefix: 'gin-vue-admin'
+  path-prefix: 'github.com/helix'
 
 # excel configuration
 excel:

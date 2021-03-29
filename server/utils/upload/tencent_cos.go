@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"gin-vue-admin/global"
+	"github.com/helix/global"
 	"mime/multipart"
 	"net/http"
 	"net/url"

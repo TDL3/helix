@@ -1,4 +1,4 @@
-module gin-vue-admin
+module github.com/helix
 
 go 1.14
 

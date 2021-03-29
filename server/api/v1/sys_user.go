@@ -1,13 +1,13 @@
 package v1
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/middleware"
-	"gin-vue-admin/model"
-	"gin-vue-admin/model/request"
-	"gin-vue-admin/model/response"
-	"gin-vue-admin/service"
-	"gin-vue-admin/utils"
+	"github.com/helix/global"
+	"github.com/helix/middleware"
+	"github.com/helix/model"
+	"github.com/helix/model/request"
+	"github.com/helix/model/response"
+	"github.com/helix/service"
+	"github.com/helix/utils"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"

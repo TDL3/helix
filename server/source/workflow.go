@@ -1,8 +1,8 @@
 package source
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
+	"github.com/helix/global"
+	"github.com/helix/model"
 	"time"
 
 	"github.com/gookit/color"

@@ -3,11 +3,11 @@ package v1
 import (
 	"errors"
 	"fmt"
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
-	"gin-vue-admin/model/response"
-	"gin-vue-admin/service"
-	"gin-vue-admin/utils"
+	"github.com/helix/global"
+	"github.com/helix/model"
+	"github.com/helix/model/response"
+	"github.com/helix/service"
+	"github.com/helix/utils"
 	"net/url"
 	"os"
 

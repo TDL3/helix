@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"bytes"
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
-	"gin-vue-admin/model/request"
-	"gin-vue-admin/service"
+	"github.com/helix/global"
+	"github.com/helix/model"
+	"github.com/helix/model/request"
+	"github.com/helix/service"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"io/ioutil"
