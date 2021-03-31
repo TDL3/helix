@@ -20,7 +20,7 @@ func Routers() *gin.Engine {
 	// Router.Use(middleware.LoadTls())  // 打开就能玩https了
 	global.GVA_LOG.Info("use middleware logger")
 	// 跨域
-	//Router.Use(middleware.Cors()) // 如需跨域可以打开
+	Router.Use(middleware.Cors()) // 如需跨域可以打开
 	global.GVA_LOG.Info("use middleware cors")
 	Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	global.GVA_LOG.Info("register swagger handler")

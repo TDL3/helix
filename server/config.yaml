@@ -3,8 +3,8 @@
 # jwt configuration
 jwt:
   signing-key: 'qmPlus'
-  expires-time: 604800
-  buffer-time: 86400
+  expires-time: 6048000
+  buffer-time: 864000
 
 # zap logger configuration
 zap:
@@ -48,7 +48,7 @@ system:
 
 # captcha configuration
 captcha:
-  key-long: 1
+  key-long: 4
   img-width: 240
   img-height: 80
 
