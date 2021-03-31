@@ -127,7 +127,7 @@ func UpdateAttendedActivities(user model.SysUser, activity model.ActivitiesManag
 	////fmt.Println(act1)
 	//var acts []model.ActivitiesManagement
 	//////
-	//err = global.GVA_DB.Model(&user).Association("Activities").Find(&acts)
+	//err = global.GVA_DB.Model(&user).AssociatLimit(limit).Offset(offset)ion("Activities").Find(&acts)
 	//fmt.Println("acts", acts)
 
 

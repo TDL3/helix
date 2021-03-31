@@ -18,6 +18,16 @@ export const getStudentUserScoreList = (data) => {
     })
 }
 
+// This will get all students score list
+export const getUnionScoreList = (data) => {
+    return service({
+        url: "/user/getUnionScoreList",
+        method: 'post',
+        data: data
+    })
+}
+
+
 // @Summary 用户登录
 // @Produce  application/json
 // @Param data body {username:"string",password:"string"}

@@ -3,7 +3,7 @@
     <el-row :gutter="10">
       <el-col :span="12">
         <el-card>
-          <div slot="header">gin-vue-admin</div>
+          <div slot="header">学生管理</div>
           <div>
             <el-row>
               <el-col :span="8" :offset="8">
@@ -11,7 +11,7 @@
                   <img
                     class="org-img dom-center"
                     src="@/assets/logo.png"
-                    alt="gin-vue-admin"
+                    alt="helix-alt"
                   />
                 </a>
               </el-col>

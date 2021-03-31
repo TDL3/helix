@@ -27,7 +27,7 @@ type ActivitiesManagement struct {
 
 
 func (ActivitiesManagement) TableName() string {
-  return "activities_mag"
+  return "activities"
 }
 
 

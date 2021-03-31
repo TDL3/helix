@@ -5,7 +5,7 @@
       <el-aside class="main-cont main-left">
         <div class="tilte">
           <img alt class="logoimg" src="~@/assets/nav_logo.png" />
-          <h2 class="tit-text" v-if="isSider">Gin-Vue-Admin</h2>
+          <h2 class="tit-text" v-if="isSider">学生管理</h2>
         </div>
         <Aside class="aside" />
       </el-aside>
@@ -73,10 +73,10 @@
         <transition mode="out-in" name="el-fade-in-linear">
           <router-view v-loading="loadingFlag"  element-loading-text="正在加载中" class="admin-box" v-if="!$route.meta.keepAlive && reloadFlag"></router-view>
         </transition>
-       <BottomInfo />
+<!--       <BottomInfo />-->
       </el-main>
     </el-container>
-   
+
   </el-container>
 </template>
 
@@ -85,7 +85,6 @@ import Aside from '@/view/layout/aside'
 import HistoryComponent from '@/view/layout/aside/historyComponent/history'
 import Screenfull from '@/view/layout/screenfull'
 import Search from '@/view/layout/search/search'
-import BottomInfo from '@/view/layout/bottomInfo/bottomInfo'
 import { mapGetters, mapActions } from 'vuex'
 import CustomPic from '@/components/customPic'
 export default {
@@ -107,7 +106,6 @@ export default {
     HistoryComponent,
     Screenfull,
     Search,
-    BottomInfo,
     CustomPic
   },
   methods: {
