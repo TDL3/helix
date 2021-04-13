@@ -35,9 +35,10 @@
         @selection-change="handleSelectionChange"
         border
         ref="multipleTable"
-        stripe
         style="width: 100%"
         tooltip-effect="dark"
+        :row-class-name="tableRowClassName"
+        :default-sort = "{prop: 'isFond', order: 'ascending'}"
     >
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="创建日期" width="180">
@@ -216,6 +217,12 @@ export default {
     UploadImage
   },
   methods: {
+    // eslint-disable-next-line no-unused-vars
+    tableRowClassName({row, rowIndex}) {
+      let fond = row.isFond
+      console.log(fond)
+      if(fond) return "success-row"
+    },
     openImgInNewTab(url) {
         let windowObjectReference = window.open(
             url,
@@ -352,7 +359,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .image {
   /*width: 158px;*/
   height: 118px;
@@ -360,5 +367,11 @@ export default {
 }
 .image:hover {
   cursor: pointer;
+}
+ .el-table .warning-row {
+   background: oldlace;
+ }
+.el-table .success-row {
+  background: #f0f9eb;
 }
 </style>

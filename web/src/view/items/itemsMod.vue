@@ -10,7 +10,7 @@
         </el-form-item>
         <el-form-item label="丢失时间">
           <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="searchInfo.time" clearable></el-date-picker>
-          <!--          <el-input placeholder="搜索条件" v-model="searchInfo.time"></el-input>-->
+<!--          <el-input placeholder="搜索条件" v-model="searchInfo.time"></el-input>-->
         </el-form-item>
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
@@ -25,18 +25,21 @@
               <el-button @click="deleteVisible = false" size="mini" type="text">取消</el-button>
               <el-button @click="onDelete" size="mini" type="primary">确定</el-button>
             </div>
-<!--            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>-->
+            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>
           </el-popover>
         </el-form-item>
       </el-form>
     </div>
     <el-table
         :data="tableData"
+        @selection-change="handleSelectionChange"
         border
         ref="multipleTable"
+        stripe
         style="width: 100%"
         tooltip-effect="dark"
     >
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="创建日期" width="180">
         <template slot-scope="scope">{{ scope.row.CreatedAt|formatDate }}</template>
       </el-table-column>
@@ -46,6 +49,10 @@
       <el-table-column label="丢失地点" prop="location" width="120"></el-table-column>
 
       <el-table-column label="丢失时间" prop="time" width="120"></el-table-column>
+
+      <el-table-column label="已找到" prop="isFond" width="120">
+        <template slot-scope="scope">{{ scope.row.isFond|formatBoolean }}</template>
+      </el-table-column>
 
       <el-table-column label="失物图片" prop="picture" width="240" >
         <template slot-scope="scope">
@@ -59,9 +66,17 @@
 
       <el-table-column label="手机" prop="phone" width="120"></el-table-column>
 
-      <el-table-column label="详细描述" prop="description" width="200"></el-table-column>
+      <el-table-column label="详细描述" prop="description" width="120"></el-table-column>
 
       <el-table-column label="创建者" prop="createdBy" width="120"></el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button class="table-button" @click="updateItems(scope.row)" size="small" type="primary"
+                     icon="el-icon-edit">审核
+          </el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <el-pagination
@@ -74,6 +89,13 @@
         @size-change="handleSizeChange"
         layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
+
+    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="确定审核通过吗">
+      <div class="dialog-footer" slot="footer">
+        <el-button @click="closeDialog">取 消</el-button>
+        <el-button @click="enterDialog" type="primary">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -86,12 +108,11 @@ import {
   deleteItemsByIds,
   updateItems,
   findItems,
-  getItemsListUser,
+  getItemsListMod,
   getUserInfo
 } from "@/api/items";  //  此处请自行替换地址
 import {formatTimeToStr} from "@/utils/date";
 import infoList from "@/mixins/infoList";
-import UploadImage from "@/components/upload/image";
 
 export default {
 
@@ -100,7 +121,7 @@ export default {
   data() {
     return {
       path: path,
-      listApi: getItemsListUser,
+      listApi: getItemsListMod,
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
@@ -118,7 +139,7 @@ export default {
         description: "",
         createdBy: "",
         uuid: "",
-
+        approved: false,
       }
     };
   },
@@ -139,16 +160,13 @@ export default {
       }
     }
   },
-  components: {
-    UploadImage
-  },
   methods: {
     openImgInNewTab(url) {
-      let windowObjectReference = window.open(
-          url,
-          "大图"
-      );
-      windowObjectReference.focus();
+        let windowObjectReference = window.open(
+            url,
+            "大图"
+        );
+        windowObjectReference.focus();
     },
     //条件搜索前端看此方法
     onSubmit() {
@@ -242,6 +260,7 @@ export default {
           res = await createItems(this.formData);
           break;
         case "update":
+          this.formData.approved = true;
           res = await updateItems(this.formData);
           break;
         default:
@@ -259,7 +278,7 @@ export default {
     },
     openDialog() {
       this.type = "create";
-      this.$router.push({name: "NewItem"});
+      this.$router.push({name: "NewItemForm"});
       // this.dialogFormVisible = false;
     }
   },

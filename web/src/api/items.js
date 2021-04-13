@@ -126,3 +126,11 @@ export const getItemsListUser = (params) => {
         params
     })
 }
+
+export const getItemsListMod = (params) => {
+    return service({
+        url: "/itm/getItemsListMod",
+        method: 'get',
+        params
+    })
+}

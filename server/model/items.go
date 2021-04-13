@@ -19,6 +19,7 @@ type Items struct {
       Description  string `json:"description" form:"description" gorm:"column:description;comment:;type:varchar(1000);size:1000;"`
       CreatedBy  string `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:;type:varchar(191);size:191;"`
       UUID  string `json:"uuid" form:"uuid" gorm:"column:uuid;comment:;type:varchar(191);size:191;"`
+      Approved  *bool `json:"approved" form:"approved" gorm:"column:approved;comment:"`
 }
 
 

@@ -33,13 +33,13 @@
         <el-input v-model="formData.description" type="textarea" placeholder="请输入详细描述"
                   :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
       </el-form-item>
-      <el-form-item label="创建者" prop="createdBy">
-        <el-input v-model="formData.createdBy" placeholder="请输入创建者" clearable :style="{width: '100%'}">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="UUID" prop="uuid">
-        <el-input v-model="formData.uuid" placeholder="请输入UUID" clearable :style="{width: '100%'}"></el-input>
-      </el-form-item>
+<!--      <el-form-item label="创建者" prop="createdBy">-->
+<!--        <el-input v-model="formData.createdBy" placeholder="请输入创建者" clearable :style="{width: '100%'}">-->
+<!--        </el-input>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="UUID" prop="uuid">-->
+<!--        <el-input v-model="formData.uuid" placeholder="请输入UUID" clearable :style="{width: '100%'}"></el-input>-->
+<!--      </el-form-item>-->
       <el-form-item size="large">
         <el-button type="primary" @click="submitForm">提交</el-button>
         <el-button @click="resetForm">重置</el-button>
@@ -87,6 +87,7 @@ export default {
         description: undefined,
         createdBy: undefined,
         uuid: undefined,
+        approved:false,
       },
       rules: {
         title: [{
@@ -163,7 +164,8 @@ export default {
             message: "创建/更改成功"
           })
         }
-      })
+      });
+      this.$router.go(-1)
     },
     resetForm() {
       this.$refs['NewItemForm'].resetFields()

@@ -70,7 +70,7 @@
 
       <el-table-column label="创建者" prop="createdBy" width="120"></el-table-column>
 
-      <el-table-column label="uuid" prop="uuid" width="120"></el-table-column>
+<!--      <el-table-column label="uuid" prop="uuid" width="120"></el-table-column>-->
 
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -332,7 +332,7 @@ export default {
     },
     openDialog() {
       this.type = "create";
-      this.$router.push({name: "NewItemForm"});
+      this.$router.push({name: "NewItem"});
       // this.dialogFormVisible = false;
     }
   },
