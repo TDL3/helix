@@ -11,7 +11,7 @@
                   <img
                     class="org-img dom-center"
                     src="@/assets/logo.png"
-                    alt="gin-vue-admin"
+                    alt="helix"
                   />
                 </a>
               </el-col>

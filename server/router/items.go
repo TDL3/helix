@@ -18,5 +18,6 @@ func InitItemsRouter(Router *gin.RouterGroup) {
 		ItemsRouter.GET("getItemsListUser", v1.GetItemsListUser)  // 获取Items列表 (User version, same as above but fonded items are not send)
 		ItemsRouter.GET("getItemsListMod", v1.GetItemsListMod)  // 获取Items列表 (User version, same as above but fonded items are not send)
 		ItemsRouter.GET("getCurrentUserItemsList", v1.GetCurrentUserItemsList)
+		ItemsRouter.GET("getAnalytics", v1.GetAnalytics)
 	}
 }

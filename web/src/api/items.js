@@ -134,3 +134,11 @@ export const getItemsListMod = (params) => {
         params
     })
 }
+
+export const getAnalytics = (params) => {
+    return service({
+        url: "/itm/getAnalytics",
+        method: 'get',
+        params
+    })
+}

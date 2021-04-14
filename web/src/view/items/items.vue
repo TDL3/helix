@@ -220,7 +220,7 @@ export default {
     // eslint-disable-next-line no-unused-vars
     tableRowClassName({row, rowIndex}) {
       let fond = row.isFond
-      console.log(fond)
+      // console.log(fond)
       if(fond) return "success-row"
     },
     openImgInNewTab(url) {

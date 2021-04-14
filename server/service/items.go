@@ -149,3 +149,48 @@ func GetItemsInfoListMod(info request.ItemsSearch) (err error, list interface{},
 	err = db.Limit(limit).Offset(offset).Find(&itms).Error
 	return err, itms, total
 }
+
+func GetAnalytics() (err error, list interface{}, total int64) {
+	db := global.GVA_DB.Model(&model.Items{})
+	recoveredItemsSql :=
+		`select count(id) as recovered_items, month(updated_at) as months, year(updated_at) as year
+		 from items
+		 where deleted_at is NULL
+		   AND is_fond = 1
+		 GROUP BY MONTH(updated_at);`
+	newItemsSql :=
+		`select count(id) as new_items, month(updated_at) as months, year(updated_at) as year
+		 from items
+		 where deleted_at is NULL
+		 group by MONTH(updated_at);`
+	var newItems model.AnalyticsNewItems
+	var recoveredItems model.AnalyticsRecoveredItems
+	//fmt.Println("analytics")
+	err = db.Raw(newItemsSql).Scan(&newItems).Error
+	//fmt.Println("newItems->",newItems)
+	err = db.Raw(recoveredItemsSql).Scan(&recoveredItems).Error
+	//fmt.Println("recoveredItems->", recoveredItems)
+	//fmt.Println("error-> ", err)
+	var resp model.AnalyticsResp
+
+	for _, v := range newItems {
+		resp.NewItems.ItemsCount = append(resp.NewItems.ItemsCount, cast(v.ItemsCount)...)
+		resp.NewItems.Year = append(resp.NewItems.Year, string(v.Year))
+		resp.NewItems.MonthsCount = append(resp.NewItems.MonthsCount, cast(v.Months)...)
+	}
+	for _, v := range recoveredItems {
+		resp.RecoveredItems.ItemsCount = append(resp.RecoveredItems.ItemsCount, cast(v.ItemsCount)...)
+		resp.RecoveredItems.Year = append(resp.RecoveredItems.Year, string(v.Year))
+		resp.RecoveredItems.MonthsCount = append(resp.RecoveredItems.MonthsCount, cast(v.Months)...)
+	}
+	//fmt.Println("resp->", resp)
+	return err, resp, total
+}
+
+func cast(arr []byte) (res []string){
+	res = make([]string, len(arr))
+	for i, v := range arr {
+		res[i] = string(v)
+	}
+	return
+}
