@@ -20,6 +20,8 @@ type Items struct {
       CreatedBy  string `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:;type:varchar(191);size:191;"`
       UUID  string `json:"uuid" form:"uuid" gorm:"column:uuid;comment:;type:varchar(191);size:191;"`
       Approved  *bool `json:"approved" form:"approved" gorm:"column:approved;comment:"`
+      // false means lost, true means fond, this is retarded
+      LostOrFond *bool `json:"lostOrFond" form:"lostOrFond" gorm:"column:lost_or_fond;comment:"`
 }
 
 

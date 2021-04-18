@@ -12,8 +12,8 @@
         <el-date-picker v-model="formData.time" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
                         :style="{width: '100%'}" placeholder="请选择丢失时间" clearable></el-date-picker>
       </el-form-item>
-      <el-form-item label="已找到" prop="isFond">
-        <el-switch v-model="formData.isFond"></el-switch>
+      <el-form-item label="类型" prop="lostOrFond">
+        <el-switch v-model="formData.lostOrFond" active-text="失物启示" inactive-text="失物招领"></el-switch>
       </el-form-item>
 
       <el-form-item label="失物图片" prop="picture">
@@ -87,7 +87,8 @@ export default {
         description: undefined,
         createdBy: undefined,
         uuid: undefined,
-        approved:false,
+        approved: false,
+        lostOrFond: false
       },
       rules: {
         title: [{

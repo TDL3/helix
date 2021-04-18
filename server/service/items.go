@@ -101,6 +101,15 @@ func GetItemsInfoList(info request.ItemsSearch) (err error, list interface{}, to
     if info.Time != "" {
          db = db.Where("`time` = ?",info.Time)
     }
+	if info.LostOrFond != nil {
+		if *info.LostOrFond == false {
+			//fmt.Println("false")
+			db.Where("`lost_or_fond` = ?", 0)
+		} else {
+			db.Where("`lost_or_fond` = ?", 1)
+		}
+	}
+
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&itms).Error
 	return err, itms, total
@@ -123,6 +132,14 @@ func GetItemsInfoListUser(info request.ItemsSearch) (err error, list interface{}
 	if info.Time != "" {
 		db = db.Where("`time` = ?",info.Time)
 	}
+	if info.LostOrFond != nil {
+		if *info.LostOrFond == false {
+			//fmt.Println("false")
+			db.Where("`lost_or_fond` = ?", 0)
+		} else {
+			db.Where("`lost_or_fond` = ?", 1)
+		}
+	}
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&itms).Error
 	return err, itms, total
@@ -144,6 +161,14 @@ func GetItemsInfoListMod(info request.ItemsSearch) (err error, list interface{},
 	}
 	if info.Time != "" {
 		db = db.Where("`time` = ?",info.Time)
+	}
+	if info.LostOrFond != nil {
+		if *info.LostOrFond == false {
+			//fmt.Println("false")
+			db.Where("`lost_or_fond` = ?", 0)
+		} else {
+			db.Where("`lost_or_fond` = ?", 1)
+		}
 	}
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&itms).Error

@@ -12,6 +12,12 @@
           <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="searchInfo.time" clearable></el-date-picker>
 <!--          <el-input placeholder="搜索条件" v-model="searchInfo.time"></el-input>-->
         </el-form-item>
+        <el-form-item label="类型" prop="reqUnion">
+          <el-select v-model="searchInfo.lostOrFond" placeholder="选择类型" clearable :style="{width: '100%'}">
+            <el-option v-for="(item,key) in typeOptions" :key="key" :label="item.label"
+                       :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
@@ -115,7 +121,7 @@ import {formatTimeToStr} from "@/utils/date";
 import infoList from "@/mixins/infoList";
 
 export default {
-
+  typeOptions: [],
   name: "Items",
   mixins: [infoList],
   data() {
@@ -278,11 +284,12 @@ export default {
     },
     openDialog() {
       this.type = "create";
-      this.$router.push({name: "NewItemForm"});
+      this.$router.push({name: "NewItem"});
       // this.dialogFormVisible = false;
     }
   },
   async created() {
+    await this.getDict("type");
     await this.getTableData();
     const userInfo = await getUserInfo();
     const userUUID = userInfo.data[0].uuid;
