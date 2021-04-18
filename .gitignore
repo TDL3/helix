@@ -2,6 +2,8 @@
 /web/node_modules
 /web/dist
 
+uploads
+
 /home/tdl3/Dev/helix/server/uploads
 
 .DS_Store

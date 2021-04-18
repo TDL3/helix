@@ -3,7 +3,7 @@
     <el-row :gutter="10">
       <el-col :span="12">
         <el-card>
-          <div slot="header">学生管理</div>
+          <div slot="header">志愿服务管理</div>
           <div>
             <el-row>
               <el-col :span="8" :offset="8">

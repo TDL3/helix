@@ -1,4 +1,4 @@
-const title = '学生管理'
+const title = '志愿服务管理'
 
 export default function getPageTitle(pageTitle) {
     if (pageTitle) {

@@ -8,7 +8,7 @@
         <div class="header">
           <a href="/">
             <!-- <img src="~@/assets/logo.png" class="logo" alt="logo" /> -->
-            <span class="title">学生管理</span>
+            <span class="title">志愿服务管理</span>
           </a>
         </div>
       </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="init">
-    <p class="in-one a-fadeinT">欢迎使用学生管理系统</p>
+    <p class="in-one a-fadeinT">欢迎使用志愿服务管理</p>
     <p class="in-two a-fadeinT">您需要初始化您的数据库并且填充初始数据</p>
     <div class="form-card in-three a-fadeinB">
       <el-form ref="form" :model="form" label-width="100px">
