@@ -40,7 +40,16 @@
       <el-table-column label="状态">
         <template slot-scope="scope">{{ scope.row|changeLabel }}</template>
       </el-table-column>
+      <el-table-column label="参加">
+        <template slot-scope="scope">
+         <span v-if="isAttendable(scope.row)">
+            <el-button class="table-button" @click="checkin(scope.row)" size="small" type="primary"
+                       icon="el-icon-edit">签到</el-button>
+         </span>
+        </template>
+      </el-table-column>
     </el-table>
+
   </div>
 </template>
 
@@ -54,6 +63,7 @@ import {
 import {formatTimeToStr} from "@/utils/date";
 import infoList from "@/mixins/infoList";
 import {getUserInfo} from "@/api/user";
+import {updateAttendant} from "@/api/ActivitiesManagement";
 
 export default {
   name: "ActivitiesManagement",
@@ -117,6 +127,18 @@ export default {
     }
   },
   methods: {
+    isAttendable(row) {
+      return this.checkExpired(row) === 1;
+    },
+    async checkin(ctx) {
+      let res = await updateAttendant(ctx)
+      if (res.code === 0) {
+        this.$message({
+          type: 'success',
+          message: '签到成功'
+        })
+      }
+    },
     // eslint-disable-next-line no-unused-vars
     tableRowClassName({row, rowIndex}) {
       switch (this.checkExpired(row)) {

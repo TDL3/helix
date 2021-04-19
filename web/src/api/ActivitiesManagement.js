@@ -118,3 +118,29 @@ export const updateAttendedActivitiesInfoList = (params) => {
         params
     })
 }
+
+
+export const getAttendant = (params) => {
+    return service({
+        url: "/acm/getAttendant",
+        method: 'get',
+        params
+    })
+}
+
+export const getAttendantList = (params) => {
+    return service({
+        url: "/acm/getAttendantList",
+        method: 'get',
+        params
+    })
+}
+
+
+export const updateAttendant = (params) => {
+    return service({
+        url: "/acm/updateAttendant",
+        method: 'put',
+        params
+    })
+}

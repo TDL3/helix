@@ -164,3 +164,62 @@ func UpdateAttendedActivitiesInfoList(c *gin.Context) {
 		response.OkWithMessage("更新成功", c)
 	}
 }
+
+func GetAttendant(c *gin.Context) {
+	var pageInfo request.ActivitiesManagementSearch
+	_ = c.ShouldBindQuery(&pageInfo)
+	var user model.SysUser
+	uuid := getUserUuid(c)
+	global.GVA_DB.Model(&model.SysUser{}).Where("uuid = ?", uuid).First(&user)
+	if err, list, total := service.GetAttendance(user); err != nil {
+		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
+func UpdateAttendant(c *gin.Context) {
+	var user model.SysUser
+	uuid := getUserUuid(c)
+	global.GVA_DB.Model(&model.SysUser{}).Where("uuid = ?", uuid).First(&user)
+
+	var acm model.ActivitiesManagement
+	_ = c.ShouldBindQuery(&acm)
+	//fmt.Println("c ", c)
+	//fmt.Println("acm ", acm)
+	if err := service.UpdateAttendance(user, acm); err != nil {
+		global.GVA_LOG.Error("更新失败!", zap.Any("err", err))
+		response.FailWithMessage("更新失败", c)
+	} else {
+		response.OkWithMessage("更新成功", c)
+	}
+}
+
+func GetAttendantList(c *gin.Context) {
+	var pageInfo request.ActivitiesManagementSearch
+	_ = c.ShouldBindQuery(&pageInfo)
+	var user model.SysUser
+	uuid := getUserUuid(c)
+	var acm model.ActivitiesManagement
+	_ = c.ShouldBindQuery(&acm)
+	actID := acm.ID
+	global.GVA_DB.Model(&model.SysUser{}).Where("uuid = ?", uuid).First(&user)
+	global.GVA_DB.Model(&model.ActivitiesManagement{}).Where("id = ?", actID).First(&acm)
+	if err, list, total := service.GetAttendantList(user, acm); err != nil {
+		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}

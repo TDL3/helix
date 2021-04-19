@@ -15,4 +15,5 @@ type SysUser struct {
 	Authority   SysAuthority `json:"authority" gorm:"foreignKey:AuthorityId;references:AuthorityId;comment:用户角色"`
 	AuthorityId string       `json:"authorityId" gorm:"default:888;comment:用户角色ID"`
 	Activities []*ActivitiesManagement `gorm:"many2many:UserRefer"`
+	Present []*ActivitiesManagement `gorm:"many2many:attendance_refer;"`
 }

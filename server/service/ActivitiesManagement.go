@@ -1,9 +1,11 @@
 package service
 
 import (
+	"fmt"
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
+	"gin-vue-admin/model/response"
 )
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -145,4 +147,60 @@ func UpdateAttendedActivities(user model.SysUser, activity model.ActivitiesManag
 	//return err, acms, total
 
 	return err
+}
+
+func GetAttendance(user model.SysUser) (err error, list interface{}, total int64) {
+	db := global.GVA_DB.Model(&user).Association("Present")
+	//db.Association("Activities")
+	var acms []model.ActivitiesManagement
+	//err = db.Count(&total).Error
+	//err = db.Limit(limit).Offset(offset).Association("Activities").Find(&acms)
+	//total = db.Count()
+	err = db.Find(&acms)
+	fmt.Println("acms:", acms)
+	fmt.Println("err: ", err)
+	return err, acms, total
+}
+
+
+func UpdateAttendance(user model.SysUser, activity model.ActivitiesManagement) (err error) {
+	err = global.GVA_DB.Model(&user).Association("Present").Append(&activity)
+	return err
+}
+
+func GetAttendantList(user model.SysUser, activity model.ActivitiesManagement) (err error, list interface{}, total int64) {
+	var users []response.Attendants
+	var checkedUsers []model.SysUser
+	var attendanceUsers []model.SysUser
+	err = global.GVA_DB.Model(activity).Association("UserAttendantRefer").Find(&checkedUsers)
+	err = global.GVA_DB.Model(activity).Association("UserRefer").Find(&attendanceUsers)
+	t := true
+	f := false
+	isPresent := false
+	for i := 0; i < len(checkedUsers); i++ {
+		isPresent = false
+		id := checkedUsers[i].ID
+		for j := 0; j < len(attendanceUsers); j++ {
+			if id == attendanceUsers[j].ID {
+				isPresent = true
+				users = append(users, response.Attendants{User: attendanceUsers[j], Present: &t})
+			}
+		}
+		if !isPresent {
+			users = append(users, response.Attendants{User: checkedUsers[i], Present: &f})
+		}
+	}
+	//fmt.Println("attendanceUsers", attendanceUsers)
+	fmt.Println("users ", users)
+
+	//db := global.GVA_DB.Model(&user).Association("Present")
+	////db.Association("Activities")
+	//var acms []model.ActivitiesManagement
+	////err = db.Count(&total).Error
+	////err = db.Limit(limit).Offset(offset).Association("Activities").Find(&acms)
+	////total = db.Count()
+	//err = db.Find(&acms)
+	//fmt.Println("acms:", acms)
+	//fmt.Println("err: ", err)
+	return err, users, total
 }

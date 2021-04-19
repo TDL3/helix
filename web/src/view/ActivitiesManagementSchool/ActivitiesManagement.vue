@@ -104,6 +104,7 @@
           <el-button class="table-button" @click="updateActivitiesManagement(scope.row)" size="small" type="primary"
                      icon="el-icon-edit">{{ formatAudit(scope.row.approved, scope.row.managementAudit) }}
           </el-button>
+          <el-button type="primary" icon="el-icon-edit" size="mini" @click="detail(scope.row)">详情</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -257,6 +258,13 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
+    },
+    detail(row) {
+      console.log(row)
+      this.$router.push({
+        name: "detail",
+            query: {id: row.ID}}
+        )
     },
     deleteRow(row) {
       this.$confirm('确定要删除吗?', '提示', {
