@@ -71,13 +71,17 @@ export default {
     // console.log(this.$route.query.id);
     if(this.$route.query.id) {
       const res = await getAttendantList({ID: this.$route.query.id});
-      let cache = [];
-      res.data.list.forEach(el => {
-        el.user.present = el.present
-        console.log(el.user)
-        cache.push(el.user)
-      });
-      this.tableData = cache;
+      console.log(res);
+      let payload = res.data.list;
+      if (payload != null) {
+        let cache = [];
+        payload.forEach(el => {
+          el.user.present = el.present
+          console.log(el.user)
+          cache.push(el.user)
+        });
+        this.tableData = cache;
+      }
     }
   }
 };

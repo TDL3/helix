@@ -177,20 +177,22 @@ func GetAttendantList(user model.SysUser, activity model.ActivitiesManagement) (
 	t := true
 	f := false
 	isPresent := false
-	for i := 0; i < len(checkedUsers); i++ {
+	for i := 0; i < len(attendanceUsers); i++ {
 		isPresent = false
-		id := checkedUsers[i].ID
-		for j := 0; j < len(attendanceUsers); j++ {
-			if id == attendanceUsers[j].ID {
+		id := attendanceUsers[i].ID
+		for j := 0; j < len(checkedUsers); j++ {
+			if id == checkedUsers[j].ID {
 				isPresent = true
-				users = append(users, response.Attendants{User: attendanceUsers[j], Present: &t})
+				users = append(users, response.Attendants{User: checkedUsers[j], Present: &t})
 			}
 		}
 		if !isPresent {
-			users = append(users, response.Attendants{User: checkedUsers[i], Present: &f})
+			fmt.Println(isPresent)
+			users = append(users, response.Attendants{User: attendanceUsers[i], Present: &f})
 		}
 	}
-	//fmt.Println("attendanceUsers", attendanceUsers)
+	fmt.Println("checkedUsers", checkedUsers)
+	fmt.Println("attendanceUsers", attendanceUsers)
 	fmt.Println("users ", users)
 
 	//db := global.GVA_DB.Model(&user).Association("Present")
