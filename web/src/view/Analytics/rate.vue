@@ -80,7 +80,10 @@ export default {
       // console.log(newItems, recoveredItems);
       this.newItems = newItems.itemsCount
       this.recoveredItems = recoveredItems.itemsCount
-      this.yLabels = newItems.monthsCount
+      // this.yLabels = newItems.monthsCount
+      newItems.monthsCount.forEach(val => {
+        this.yLabels.push(val + "月")
+      })
     }
   },
   destroyed() {

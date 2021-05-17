@@ -204,6 +204,7 @@ func GetAnalytics() (err error, list interface{}, total int64) {
 		resp.NewItems.MonthsCount = append(resp.NewItems.MonthsCount, cast(v.Months)...)
 	}
 	for _, v := range recoveredItems {
+
 		resp.RecoveredItems.ItemsCount = append(resp.RecoveredItems.ItemsCount, cast(v.ItemsCount)...)
 		resp.RecoveredItems.Year = append(resp.RecoveredItems.Year, string(v.Year))
 		resp.RecoveredItems.MonthsCount = append(resp.RecoveredItems.MonthsCount, cast(v.Months)...)
